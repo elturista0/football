@@ -588,8 +588,14 @@ function minimap(){const u=H/180,mw=66*u,mh=40*u,mx=(W-mw)/2,my=H-mh-4*u;ctx.fil
   const X=v=>mx+clamp((v-PX0)/PW,0,1)*mw,Y=v=>my+clamp((v-PY0)/PH,0,1)*mh;
   for(const p of all){dot([X(p.x),Y(p.y)],1.7*u,p.team.key==='LEE'?'#ffffff':'#ff3b3b');if(p===G.ctrl){ctx.strokeStyle='#4fe3ff';ctx.lineWidth=0.8*u;ctx.beginPath();ctx.arc(X(p.x),Y(p.y),2.8*u,0,7);ctx.stroke()}}
   dot([X(ball.x),Y(ball.y)],1.5*u,'#ffd400')}
-let menuT=0;
-function render(){
+let menuT=0,lastErr='';
+function render(){ctx.setTransform(1,0,0,1,0,0);ctx.globalAlpha=1;
+  if(!Number.isFinite(CAM.x)||!Number.isFinite(CAM.ty)){CAM.x=CX;CAM.ty=GCY}
+  if(G&&ball&&![ball.x,ball.y,ball.z,ball.vx,ball.vy].every(Number.isFinite)){resetBall(CX,GCY)}
+  try{render3()}catch(e){lastErr=String(e&&e.message||e)}
+  if(lastErr){ctx.setTransform(1,0,0,1,0,0);ctx.font=`${Math.round(H/30)}px monospace`;ctx.textAlign='left';ctx.textBaseline='bottom';ctx.fillStyle='rgba(0,0,0,.6)';ctx.fillRect(0,H-H/22,W,H/22);ctx.fillStyle='#ff6b6b';ctx.fillText('ERR: '+lastErr,6,H-3)}
+}
+function render3(){
   if(!G){menuT+=1/60;CAM.x=CX+Math.sin(menuT*0.18)*240;CAM.ty=GCY+30}
   camSetup();drawWorld(G&&G.state==='goal');if(!G)return;
   // shadows
@@ -619,7 +625,8 @@ const isTouch=(window.matchMedia&&matchMedia('(pointer:coarse)').matches)||('ont
 if(!isTouch)document.body.classList.add('notouch');
 $(isTouch?'#helpKeys':'#helpTouch').classList.add('hidden');
 const ui=$('#ui'),pad=$('#pad'),b1=$('#b1'),b2=$('#b2'),b3=$('#b3'),b4=$('#b4');
-function fit(){const dpr=Math.min(window.devicePixelRatio||1,2),nh=clamp(Math.round(innerHeight*dpr),220,540),nw=Math.round(nh*innerWidth/Math.max(1,innerHeight));if(nw!==W||nh!==H){W=nw;H=nh;cv.width=W;cv.height=H}cv.style.width=innerWidth+'px';cv.style.height=innerHeight+'px';
+let fitW=0,fitH=0;
+function fit(){fitW=innerWidth;fitH=innerHeight;const dpr=Math.min(window.devicePixelRatio||1,2),nh=clamp(Math.round(innerHeight*dpr),220,540),nw=Math.round(nh*innerWidth/Math.max(1,innerHeight));if(nw!==W||nh!==H){W=nw;H=nh;cv.width=W;cv.height=H}cv.style.width=innerWidth+'px';cv.style.height=innerHeight+'px';
   const port=innerHeight>innerWidth&&isTouch;$('#rotate').classList.toggle('hidden',!(port&&running&&!rotOk))}
 let rotOk=false;addEventListener('resize',fit);addEventListener('orientationchange',()=>setTimeout(fit,200));
 $('#rotOk').onclick=()=>{rotOk=true;fit()};
@@ -681,9 +688,12 @@ function updLabels(){if(!G)return;const c=G.ctrl;
 
 /* ---------- loop ---------- */
 let last=performance.now(),acc=0;
-function frame(now){const d=Math.min(0.1,(now-last)/1000);last=now;
+function frame(now){try{const d=Math.min(0.1,(now-last)/1000);last=now;
   if(running&&!paused){acc+=d;while(acc>=STEP){step(STEP);acc-=STEP}}else acc=0;
-  render();updLabels();requestAnimationFrame(frame)}
+  if(innerWidth!==fitW||innerHeight!==fitH)fit();
+  render();updLabels()}catch(e){lastErr=String(e&&e.message||e);acc=0}finally{requestAnimationFrame(frame)}}
+document.addEventListener('fullscreenchange',()=>setTimeout(fit,120));
+cv.addEventListener('contextrestored',()=>{try{buildTextures()}catch(e){}});
 buildTextures();fit();requestAnimationFrame(frame);
 
 window.__PF={inp,settings,newMatch,step:n=>{for(let i=0;i<n;i++)step(STEP)},get G(){return G},get teams(){return teams},get ball(){return ball},get all(){return all},render};
