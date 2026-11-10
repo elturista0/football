@@ -12,7 +12,7 @@
 <link rel="apple-touch-icon" href="icon-192.png">
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
-html,body{width:100%;height:100%;background:#0b0f0a;overflow:hidden;touch-action:none;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;font-family:ui-monospace,"SF Mono",Menlo,Consolas,"Courier New",monospace;color:#f2f2f2}
+html,body{width:100%;height:100%;background:#0b0f0a;overflow:hidden;overscroll-behavior:none;touch-action:manipulation;user-select:none;-webkit-user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;font-family:ui-monospace,"SF Mono",Menlo,Consolas,"Courier New",monospace;color:#f2f2f2}
 #c{position:fixed;left:0;top:0}
 .ov{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(6,10,6,.82);z-index:20;padding:12px}
 .hidden{display:none!important}
@@ -33,7 +33,7 @@ h1{font-size:clamp(22px,5vw,32px);letter-spacing:2px;line-height:1.05;text-trans
 .big{font-size:clamp(18px,4.5vw,26px);font-weight:800;margin:14px 0 4px;text-transform:uppercase}
 .res{font-size:14px;color:#9fbf98;text-transform:uppercase;letter-spacing:1px}
 #ui{position:fixed;inset:0;z-index:10;pointer-events:none}
-#stick{position:absolute;left:0;bottom:0;width:48%;height:72%;pointer-events:auto}
+#stick{position:absolute;left:0;bottom:0;width:48%;height:72%;pointer-events:auto;touch-action:none}
 #base{position:absolute;width:162px;height:162px;margin:-81px 0 0 -81px;border:3px solid rgba(255,255,255,.35);border-radius:50%;background:rgba(0,0,0,.2);left:calc(110px + env(safe-area-inset-left));top:calc(100% - 106px - env(safe-area-inset-bottom))}
 #knob{position:absolute;left:50%;top:50%;width:70px;height:70px;margin:-35px 0 0 -35px;border-radius:50%;background:rgba(255,255,255,.4);border:3px solid rgba(255,255,255,.75)}
 .btn{position:absolute;pointer-events:auto;border-radius:50%;border:3px solid #000;box-shadow:0 4px 0 #000;font:inherit;font-weight:800;font-size:12px;color:#111;display:flex;align-items:center;justify-content:center;text-transform:uppercase;opacity:.85;touch-action:none}
@@ -48,6 +48,82 @@ h1{font-size:clamp(22px,5vw,32px);letter-spacing:2px;line-height:1.05;text-trans
 .pulse{animation:pulse .5s infinite alternate}
 @keyframes pulse{to{filter:brightness(1.35);box-shadow:0 0 0 5px rgba(255,225,77,.8),0 4px 0 #000}}
 .notouch #stick,.notouch .btn{display:none}
+/* ===== PES13-style menus ===== */
+.scr{position:fixed;inset:0;z-index:20;overflow:hidden;color:#fff;font-family:Arial,Helvetica,sans-serif}
+#home{background:radial-gradient(120% 95% at 50% 45%,rgba(0,0,0,.1),rgba(0,0,0,.72))}
+.diag{position:absolute;inset:0;pointer-events:none}
+.diag i{position:absolute;top:-25%;height:150%;transform:skewX(-30deg);border-left:3px solid rgba(74,156,255,.9);border-right:3px solid rgba(74,156,255,.9);background:rgba(3,12,32,.42)}
+.diag i:nth-child(1){left:-20%;width:38%}.diag i:nth-child(2){left:36%;width:20%;background:rgba(0,0,0,.2)}.diag i:nth-child(3){left:80%;width:42%}
+.logo{position:absolute;left:calc(16px + env(safe-area-inset-left));top:calc(10px + env(safe-area-inset-top));font:900 italic clamp(15px,4.6vh,24px)/1 Arial,sans-serif;color:#ffe14d;text-shadow:2px 2px 0 #000;letter-spacing:1px}
+.logo small{display:block;font:700 clamp(9px,2.5vh,12px)/1.2 Arial,sans-serif;color:#a9d0ff;letter-spacing:2px;margin-top:4px;font-style:normal}
+.rb{position:absolute;left:calc(3% + env(safe-area-inset-left));right:0;top:21%;height:43%;min-height:140px;background:#5aaaff;clip-path:polygon(0 50%,48px 0,100% 0,100% 100%,48px 100%)}
+.rbi{position:absolute;inset:4px 0 4px 6px;clip-path:polygon(0 50%,45px 0,100% 0,100% 100%,45px 100%);background:var(--hex),linear-gradient(180deg,#2876d6 0%,#15539f 46%,#0c3877 100%);display:flex;align-items:stretch}
+.rbi:before{content:"";position:absolute;right:0;top:0;width:32%;height:58%;background:var(--hexg);-webkit-mask-image:linear-gradient(to left,#000 10%,transparent);mask-image:linear-gradient(to left,#000 10%,transparent);pointer-events:none}
+.emb{flex:0 0 auto;width:clamp(96px,22vh,150px);margin-left:46px;display:flex;flex-direction:column;align-items:center;justify-content:center;cursor:pointer}
+.emb svg{width:62%;height:auto;filter:drop-shadow(2px 3px 0 rgba(0,0,0,.45))}
+.emb .el{font:900 italic clamp(12px,3.8vh,19px)/1 Arial,sans-serif;text-transform:uppercase;margin-top:6px;text-shadow:2px 2px 0 rgba(0,0,0,.5);text-align:center}
+.emb .dots{font-size:8px;letter-spacing:2px;color:#cfe6ff;margin-top:3px}
+.rbody{flex:1;min-width:0;display:flex;flex-direction:column;justify-content:center;padding-right:10px}
+.rtitle{font:900 italic clamp(24px,10vh,54px)/1 Arial,sans-serif;text-transform:uppercase;text-shadow:3px 3px 0 rgba(0,0,0,.55);padding-bottom:6px;border-bottom:1px solid rgba(190,225,255,.55);margin-bottom:8px;white-space:nowrap}
+.icons{display:flex;gap:clamp(2px,1vw,14px);align-items:flex-end;overflow:visible;padding-top:6px}
+.hi{background:none;border:0;color:#fff;opacity:.55;display:flex;flex-direction:column;align-items:center;width:clamp(46px,13vh,78px);padding:2px 0 4px;cursor:pointer;transition:transform .12s,opacity .12s;position:relative}
+.hi svg{width:62%;height:auto}
+.hi span{font:700 clamp(7px,2.3vh,11px)/1.1 Arial,sans-serif;text-transform:uppercase;margin-top:4px;white-space:nowrap;letter-spacing:.3px}
+.hi.on{opacity:1;transform:scale(1.14);filter:drop-shadow(0 0 6px #8fd0ff)}
+.hi.on:after{content:"";position:absolute;bottom:-2px;left:20%;right:20%;height:3px;background:#ffe14d}
+.hi.soon:before{content:"СКОРО";position:absolute;top:-2px;right:0;font:800 7px Arial;background:#ffe14d;color:#111;padding:1px 3px}
+.under{position:absolute;left:calc(11% + env(safe-area-inset-left));top:calc(64% + 12px);right:8%}
+.desc{font:700 clamp(12px,3.9vh,19px)/1.3 Arial,sans-serif;text-shadow:2px 2px 0 #000}
+.hint{margin-top:clamp(6px,3vh,18px);display:flex;gap:18px}
+.hint button{background:none;border:0;color:#fff;font:800 clamp(12px,3.6vh,17px) Arial,sans-serif;display:flex;align-items:center;gap:7px;text-shadow:2px 2px 0 #000;cursor:pointer}
+.hint .ok:before{content:"";width:15px;height:15px;border-radius:50%;background:radial-gradient(circle at 35% 35%,#a7f3a0,#22c55e 60%,#166534);border:2px solid #0a2a12}
+.hint .nav{opacity:.8}
+#sub{background:linear-gradient(180deg,rgba(3,10,26,.72),rgba(3,10,26,.9))}
+.sh{position:absolute;left:0;right:0;top:calc(8px + env(safe-area-inset-top));height:clamp(44px,13vh,62px);background:#5aaaff;clip-path:polygon(0 0,100% 0,100% 100%,0 100%)}
+.shi{position:absolute;inset:3px 0;background:var(--hex),linear-gradient(180deg,#2876d6,#0f4189);display:flex;align-items:center;gap:12px;padding-left:calc(18px + env(safe-area-inset-left))}
+#shIcon{display:flex;height:66%;align-items:center}#shIcon svg{height:100%;width:auto}
+.shi b{font:900 italic clamp(20px,7vh,34px)/1 Arial,sans-serif;text-transform:uppercase;text-shadow:2px 2px 0 rgba(0,0,0,.5)}
+.sbody{position:absolute;top:calc(clamp(44px,13vh,62px) + 20px + env(safe-area-inset-top));bottom:calc(52px + env(safe-area-inset-bottom));left:calc(14px + env(safe-area-inset-left));right:calc(14px + env(safe-area-inset-right));overflow-y:auto;-webkit-overflow-scrolling:touch;touch-action:pan-y;display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:10px;align-content:start;padding-bottom:6px}
+.pnl{position:relative;background:var(--hex),linear-gradient(180deg,rgba(24,82,165,.88),rgba(9,38,88,.92));border:2px solid #4a9cff;padding:10px 12px 12px;clip-path:polygon(0 0,calc(100% - 12px) 0,100% 12px,100% 100%,12px 100%,0 calc(100% - 12px))}
+.pnl.wide{grid-column:1/-1}
+.ph{font:800 italic 12px/1.2 Arial,sans-serif;text-transform:uppercase;letter-spacing:1px;color:#c3e2ff;border-left:4px solid #ffe14d;padding-left:7px;margin-bottom:8px}
+.big{font:900 italic clamp(24px,7.5vh,40px)/1.05 Arial,sans-serif;text-shadow:2px 2px 0 rgba(0,0,0,.4)}
+.unit{font:700 12px/1.3 Arial,sans-serif;color:#a9d0ff;margin-left:4px;font-style:normal}
+.muted{font:600 13px/1.45 Arial,sans-serif;color:#c3d8ef}
+.kv{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.1);font:700 13px Arial,sans-serif}
+.kv:last-child{border-bottom:0}.kv b{font-style:italic;font-size:15px}
+.bar{display:flex;height:10px;margin:8px 0 4px;border:1px solid rgba(255,255,255,.35);background:rgba(0,0,0,.3)}
+.bar i{display:block;height:100%}.bar .w{background:#22c55e}.bar .d{background:#facc15}.bar .l{background:#ef4444}
+.favc{display:flex;align-items:center;gap:12px}
+.crest{display:inline-block;width:38px;height:46px;flex:none;clip-path:polygon(50% 0,100% 14%,100% 58%,50% 100%,0 58%,0 14%);background:linear-gradient(135deg,var(--a) 0 42%,var(--b) 42% 58%,var(--a) 58%);vertical-align:middle}
+.crest.s{width:16px;height:19px;margin-right:6px}
+.tro{display:grid;grid-template-columns:repeat(auto-fill,minmax(78px,1fr));gap:6px}
+.t{text-align:center;padding:7px 3px;background:rgba(0,0,0,.28);border:1px solid rgba(255,255,255,.15);font:700 10px/1.2 Arial,sans-serif;color:#b9c9dc}
+.t i{display:block;font-style:normal;font-size:24px;line-height:1.2;filter:grayscale(1) opacity(.35)}
+.t small{display:block;font-weight:600;font-size:9px;opacity:.75;margin-top:2px}
+.t.got{border-color:#ffd24d;background:rgba(255,210,77,.14);color:#fff}.t.got i{filter:none}
+.clubs{display:flex;gap:10px}
+.club{flex:1;display:flex;align-items:center;gap:10px;background:rgba(0,0,0,.28);border:2px solid rgba(255,255,255,.2);color:#fff;padding:10px;font:800 italic 16px Arial,sans-serif;text-transform:uppercase;cursor:pointer;text-align:left}
+.club small{display:block;font:600 11px Arial;color:#a9d0ff;text-transform:none;font-style:normal}
+.club.on{border-color:#ffe14d;background:rgba(255,225,77,.15)}
+.bigbtn{position:fixed;right:calc(14px + env(safe-area-inset-right));bottom:calc(8px + env(safe-area-inset-bottom));z-index:3;box-shadow:0 4px 12px rgba(0,0,0,.5);background:linear-gradient(#ffe866,#f2bf00);color:#111;border:0;font:900 italic clamp(15px,4.6vh,20px) Arial,sans-serif;padding:12px 34px;clip-path:polygon(14px 0,100% 0,calc(100% - 14px) 100%,0 100%);text-transform:uppercase;cursor:pointer}
+.srow{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:8px 0;border-bottom:1px solid rgba(255,255,255,.1);font:700 14px Arial,sans-serif}
+.srow:last-child{border-bottom:0}
+.sel{display:flex;align-items:center;gap:6px}
+.sel button{width:38px;height:34px;background:#0c3877;border:2px solid #4a9cff;color:#fff;font:900 14px Arial;cursor:pointer}
+.sel b{min-width:130px;text-align:center;font:800 italic 15px Arial,sans-serif}
+.hrow{display:grid;grid-template-columns:62px 1fr auto;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid rgba(255,255,255,.1);font:700 13px Arial,sans-serif}
+.hrow:last-child{border-bottom:0}.hrow .dt{color:#a9d0ff;font-size:11px}
+.sc{font:900 italic 15px Arial;padding:2px 8px;min-width:54px;text-align:center}.sc.w{background:#15803d}.sc.d{background:#a16207}.sc.l{background:#b91c1c}
+.back{position:absolute;left:calc(14px + env(safe-area-inset-left));bottom:calc(10px + env(safe-area-inset-bottom));background:none;border:0;color:#fff;font:800 16px Arial,sans-serif;display:flex;align-items:center;gap:8px;text-shadow:2px 2px 0 #000;cursor:pointer;padding:6px}
+.back:before{content:"◀";display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:#fff;color:#0c3877;font-size:11px;text-shadow:none}
+.danger{background:#7f1d1d!important;border-color:#f87171!important;width:auto!important;padding:0 12px}
+.hl{color:#ffe14d}
+.ov .panel{background:var(--hex),linear-gradient(180deg,rgba(24,82,165,.95),rgba(9,38,88,.97));border:3px solid #5aaaff;box-shadow:none;clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px));font-family:Arial,Helvetica,sans-serif}
+.ov h1{color:#fff;font:900 italic clamp(22px,6vh,32px)/1.1 Arial,sans-serif;text-shadow:2px 2px 0 rgba(0,0,0,.5);border-left:5px solid #ffe14d;padding-left:10px}
+.ov .go{background:linear-gradient(#ffe866,#f2bf00);border:0;box-shadow:none;font:900 italic 18px Arial,sans-serif;clip-path:polygon(14px 0,100% 0,calc(100% - 14px) 100%,0 100%)}
+.ov .go.alt{background:#0c3877;color:#fff;outline:2px solid #4a9cff;outline-offset:-2px;clip-path:none}
+.ov .big{font:900 italic clamp(18px,5vh,28px) Arial,sans-serif}.ov .res{font:700 14px Arial,sans-serif;color:#c3e2ff}.ov .res.hl{color:#ffe14d}
 </style>
 </head>
 <body>
@@ -64,36 +140,21 @@ h1{font-size:clamp(22px,5vw,32px);letter-spacing:2px;line-height:1.05;text-trans
   <button id="bPause" aria-label="Пауза">II</button>
 </div>
 
-<div id="menu" class="ov">
-  <div class="panel">
-    <h1>Пиксель <br>Футбол '95</h1>
-    <div class="sub">Ретро-футбол в духе 16-бит</div>
-    <div class="lbl">Твоя команда</div>
-    <div class="row">
-      <button class="opt on" data-g="team" data-v="LEE"><span class="kit" style="background:#f2f2f2;box-shadow:inset 0 4px 0 #2563eb"></span>Лидс</button>
-      <button class="opt" data-g="team" data-v="MUN"><span class="kit" style="background:#d7191f;box-shadow:inset 0 -5px 0 #f2f2f2"></span>Ман Юнайтед</button>
-    </div>
-    <div class="lbl">Длина тайма</div>
-    <div class="row">
-      <button class="opt" data-g="len" data-v="2">2 мин</button>
-      <button class="opt on" data-g="len" data-v="3">3 мин</button>
-      <button class="opt" data-g="len" data-v="5">5 мин</button>
-    </div>
-    <div class="lbl">Сложность</div>
-    <div class="row">
-      <button class="opt" data-g="diff" data-v="easy">Легко</button>
-      <button class="opt on" data-g="diff" data-v="normal">Норма</button>
-      <button class="opt" data-g="diff" data-v="hard">Сложно</button>
-    </div>
-    <div class="lbl">Джойстик</div>
-    <div class="row">
-      <button class="opt" data-g="stick" data-v="fixed">Фиксированный</button>
-      <button class="opt" data-g="stick" data-v="float">Подвижный</button>
-    </div>
-    <button class="go" id="start">▶ Начать матч</button>
-    <div class="help" id="helpTouch">С мячом: <b>Пас</b>, <b>Вразрез</b> — пас на ход, <b>Удар</b> на чужой половине (держи для силы, джойстик вверх/вниз — угол) или <b>Вынос</b> на своей, <b>Рывок</b> — держи для ускорения.<br>Без мяча: <b>Курсор</b> — смена игрока, <b>Сопровождать</b> — держи, игрок встанет между соперником и воротами, <b>Подкат</b>, <b>Рывок и прессинг</b> — держи, игрок сам бежит отбирать.</div>
-    <div class="help" id="helpKeys"><b>Стрелки / WASD</b> — бег, <b>X</b> — пас / курсор, <b>C</b> — вразрез / сопровождать, <b>Z</b> или <b>Пробел</b> — удар·вынос / подкат, <b>Shift</b> — рывок / прессинг, <b>P</b> — пауза.</div>
-  </div>
+<div id="home" class="scr">
+  <div class="diag"><i></i><i></i><i></i></div>
+  <div class="logo">Пиксель Футбол '95<small>RETRO FOOTBALL</small></div>
+  <div class="rb"><div class="rbi">
+    <div class="emb" id="emb"><div id="embIcon"></div><div class="el" id="embLbl"></div><div class="dots">● ● ● ● ● ● ●</div></div>
+    <div class="rbody"><div class="rtitle" id="rTitle"></div><div class="icons" id="icons"></div></div>
+  </div></div>
+  <div class="under"><div class="desc" id="desc"></div>
+    <div class="hint"><button class="ok" id="homeGo">Выбрать</button></div></div>
+</div>
+<div id="sub" class="scr hidden">
+  <div class="diag"><i></i><i></i><i></i></div>
+  <div class="sh"><div class="shi"><span id="shIcon"></span><b id="shTitle"></b></div></div>
+  <div class="sbody" id="sbody"></div>
+  <button class="back" id="subBack">Назад</button>
 </div>
 
 <div id="pause" class="ov hidden">
@@ -111,6 +172,7 @@ h1{font-size:clamp(22px,5vw,32px);letter-spacing:2px;line-height:1.05;text-trans
     <h1>Финальный свисток</h1>
     <div class="big" id="endScore"></div>
     <div class="res" id="endRes"></div>
+    <div class="res hl" id="endTro" style="margin-top:6px"></div>
     <button class="go" id="again">↻ Реванш</button>
     <button class="go alt" id="toMenu">В меню</button>
   </div>
@@ -198,15 +260,19 @@ function mkTeam(key,i){return{key,kit:KITS[key],idx:i,score:0,side:1,human:false
 function mkPlayer(t,i){const f=FORM[i];return{team:t,i,role:f[2],name:t.kit.names[i],num:[1,2,5,6,3,8,4,10,7,9,11][i],bx:f[0],by:f[1],x:0,y:0,vx:0,vy:0,tvx:0,tvy:0,face:0,anim:Math.random()*2,
   spd:(f[2]==='GK'?70:74)*rnd(0.94,1.06),stun:0,fallen:0,kickCd:0,slide:0,sdx:0,sdy:0,tackleCd:0,decCd:0,dive:0,diveDir:1,hold:0,spx:null,spy:null,skin:pick(SKINS),hair:pick(HAIRS)}}
 
-function newMatch(){
+function newMatch(train){
   teams=[mkTeam('LEE',0),mkTeam('MUN',1)];teams[0].side=1;teams[1].side=-1;
   teams.forEach(t=>{t.human=t.key===settings.team;t.ai=t.human?MATE:DIFF[settings.diff]||DIFF.normal;t.players=FORM.map((f,i)=>mkPlayer(t,i));});
+  if(train)for(const t of teams)if(!t.human)t.players=[t.players[0]];
   all=[...teams[0].players,...teams[1].players];
   ball={x:CX,y:GCY,z:0,vx:0,vy:0,vz:0,owner:null,lastTouch:null,passTarget:null,passTeam:null,shot:false,shotTeam:null,saveChecked:false,spin:0};
-  G={state:'kickoff',half:1,time:0,halfLen:settings.len*60,ctrl:null,charge:0,charging:false,msg:null,timer:0,sp:null,cam:{x:CX-W/2,y:GCY-H/2},
+  G={state:'kickoff',half:1,time:0,halfLen:train?Infinity:settings.len*60,training:!!train,mg:{},trailed:false,ctrl:null,charge:0,charging:false,msg:null,timer:0,sp:null,cam:{x:CX-W/2,y:GCY-H/2},
      firstKick:teams[0],prevOwnerTeam:null,switchCd:0,ended:false,stats:{shots:[0,0],goals:0,sp:0}};
-  setupKickoff(teams[0]);
+  if(train)trainingReset();else setupKickoff(teams[0]);
 }
+function trainingReset(){const h=humanTeam()||teams[0],o=other(h);G.state='play';G.charging=false;G.q=null;G.timer=0;
+  for(const p of all){resetP(p);if(p.team===h){p.x=wx(h,clamp(p.bx+0.25,0.08,0.82));p.y=wy(p.by)}else{p.x=ownGoalX(o)+o.side*6;p.y=GCY}}
+  const tk=h.players[9];tk.x=wx(h,0.6);tk.y=GCY+rnd(-70,70);resetBall(tk.x+h.side*5,tk.y);take(tk);G.ctrl=tk;G.prevOwnerTeam=h;msg('ТРЕНИРОВКА',1.2)}
 
 function resetBall(x,y){Object.assign(ball,{x,y,z:0,vx:0,vy:0,vz:0,owner:null,passTarget:null,passTeam:null,shot:false,saveChecked:false})}
 function resetP(p){p.vx=p.vy=p.tvx=p.tvy=0;p.stun=0;p.slide=0;p.dive=0;p.fallen=0;p.kickCd=0;p.hold=0;p.spx=null;p.face=p.team.side>0?0:Math.PI}
@@ -315,7 +381,7 @@ function aiOutfield(p,dt){
 }
 function aiGK(p,dt){
   const t=p.team,g=ownGoalX(t),s=t.side;
-  if(ball.owner===p){p.tvx=p.tvy=0;p.hold-=dt;if(p.hold<=0){const m=bestPassTarget(p,true)||t.players[pick([2,3,6,7])];pass(p,m,dist(p,m)>150?'lob':'auto')}return}
+  if(ball.owner===p){p.tvx=p.tvy=0;p.hold-=dt;if(p.hold<=0){if(G.training&&!t.human){trainingReset();return}const m=bestPassTarget(p,true)||t.players[pick([2,3,6,7])];pass(p,m,dist(p,m)>150?'lob':'auto')}return}
   const db=hyp(ball.x-g,ball.y-GCY);
   let tx=g+s*(6+(db<200?(200-db)*0.06:0)),ty=clamp(GCY+(ball.y-GCY)*0.5,GCY-GOAL_HALF+3,GCY+GOAL_HALF-3),sf=1.05;
   const inBox=inOwnBox(p,ball),bs=hyp(ball.vx,ball.vy);
@@ -419,9 +485,12 @@ function checkOut(){
 
 /* ---------- states ---------- */
 function goalScored(t){t.score++;G.state='goal';G.timer=0;G.scoredBy=t;G.concede=other(t);G.stats.goals++;
-  const lt=ball.lastTouch;G.scorer=lt&&lt.team===t?lt:null;msg(G.scorer?'ГОЛ!':'АВТОГОЛ!',3.2,true);
+  const lt=ball.lastTouch;G.scorer=lt&&lt.team===t?lt:null;
+  if(G.scorer&&t.human){if(G.training){stats.training.goals++;if(stats.training.goals>=25)unlock('train25')}else{const n=G.scorer.name;G.mg[n]=(G.mg[n]||0)+1;stats.scorers[n]=(stats.scorers[n]||0)+1}}
+  {const hh=humanTeam();if(hh&&!G.training&&other(hh).score>hh.score)G.trailed=true}msg(G.scorer?'ГОЛ!':'АВТОГОЛ!',3.2,true);
   ball.owner=null;ball.shot=false;G.charging=false;sfx.goal();try{navigator.vibrate&&navigator.vibrate([80,60,160])}catch(e){}}
 function setPiece(type,t,x,y){
+  if(G.training){trainingReset();return}
   G.state='setpiece';G.timer=0;G.ready=false;G.readyT=0;G.charging=false;resetBall(x,y);G.stats.sp++;
   const tk=type==='goalkick'?t.players[0]:nearestTo(t,{x,y},true);G.sp={type,team:t,x,y,taker:tk};
   for(const p of all)p.spx=null;
@@ -476,7 +545,7 @@ function updGoal(dt){
   const sc=G.scorer;
   for(const p of all){if(p.team===G.scoredBy){if(p===sc)moveTo(p,p.x,p.y<GCY?PY0+12:PY1-12,1);else if(sc&&p.role!=='GK')moveTo(p,sc.x,sc.y,0.95);else p.tvx=p.tvy=0}
     else{const h=homePos(p);moveTo(p,h.x,h.y,0.35)}}
-  movePlayers(dt);if(G.timer>3.4)setupKickoff(G.concede);
+  movePlayers(dt);if(G.timer>(G.training?2.2:3.4)){if(G.training)trainingReset();else setupKickoff(G.concede)}
 }
 function updBreak(dt){
   G.timer+=dt;for(const p of all){tick(p,dt);p.tvx*=0.9;p.tvy*=0.9}movePlayers(dt);updBall(dt);
@@ -582,7 +651,7 @@ function minute(){if(G.state==='halftime')return 45;if(G.state==='fulltime')retu
 function hud3(){const u=H/180,a=teams[0],b=teams[1],y=5*u,h=11*u;let x=6*u;ctx.save();ctx.textAlign='center';ctx.textBaseline='middle';ctx.font=`bold italic ${7.5*u}px Arial, sans-serif`;
   ctx.fillStyle='rgba(0,0,0,.35)';ctx.fillRect(x+1.5*u,y+1.5*u,99*u,h);
   const box=(w,bg,t,c,kit)=>{ctx.fillStyle=bg;ctx.fillRect(x,y,w,h);if(kit){ctx.fillStyle=kit;ctx.fillRect(x,y+h-1.6*u,w,1.6*u)}ctx.fillStyle=c;ctx.fillText(String(t),x+w/2,y+h/2);x+=w+u};
-  box(26*u,'#14215a',a.kit.short,'#fff',a.kit.shirt);box(11*u,'#ffe14d',a.score,'#111');box(11*u,'#ffe14d',b.score,'#111');box(26*u,'#14215a',b.kit.short,'#fff',b.kit.shirt);box(21*u,'#ffe14d',minute()+"'",'#111');ctx.restore()}
+  box(26*u,'#14215a',a.kit.short,'#fff',a.kit.shirt);box(11*u,'#ffe14d',a.score,'#111');box(11*u,'#ffe14d',b.score,'#111');box(26*u,'#14215a',b.kit.short,'#fff',b.kit.shirt);box(21*u,'#ffe14d',G.training?'ТРЕН':minute()+"'",'#111');ctx.restore()}
 function minimap(){const u=H/180,mw=66*u,mh=40*u,mx=(W-mw)/2,my=H-mh-4*u;ctx.fillStyle='rgba(30,110,40,.55)';ctx.fillRect(mx,my,mw,mh);
   ctx.strokeStyle='rgba(255,255,255,.55)';ctx.lineWidth=Math.max(1,0.5*u);ctx.strokeRect(mx,my,mw,mh);ctx.beginPath();ctx.moveTo(mx+mw/2,my);ctx.lineTo(mx+mw/2,my+mh);ctx.stroke();
   const bw=104/PW*mw,bh=240/PH*mh;ctx.strokeRect(mx,my+(mh-bh)/2,bw,bh);ctx.strokeRect(mx+mw-bw,my+(mh-bh)/2,bw,bh);
@@ -628,7 +697,6 @@ function render3(){
 /* ---------- UI ---------- */
 const isTouch=(window.matchMedia&&matchMedia('(pointer:coarse)').matches)||('ontouchstart' in window);
 if(!isTouch)document.body.classList.add('notouch');
-$(isTouch?'#helpKeys':'#helpTouch').classList.add('hidden');
 const ui=$('#ui'),pad=$('#pad'),b1=$('#b1'),b2=$('#b2'),b3=$('#b3'),b4=$('#b4');
 let fitW=0,fitH=0;
 function fit(){fitW=innerWidth;fitH=innerHeight;const dpr=Math.min(window.devicePixelRatio||1,2),nh=clamp(Math.round(innerHeight*dpr),220,540),nw=Math.round(nh*innerWidth/Math.max(1,innerHeight));if(nw!==W||nh!==H){W=nw;H=nh;cv.width=W;cv.height=H}cv.style.width=innerWidth+'px';cv.style.height=innerHeight+'px';
@@ -636,22 +704,129 @@ function fit(){fitW=innerWidth;fitH=innerHeight;const dpr=Math.min(window.device
 let rotOk=false;addEventListener('resize',fit);addEventListener('orientationchange',()=>setTimeout(fit,200));
 $('#rotOk').onclick=()=>{rotOk=true;fit()};
 
-document.querySelectorAll('.opt').forEach(b=>b.addEventListener('click',()=>{const g=b.dataset.g;document.querySelectorAll(`.opt[data-g="${g}"]`).forEach(o=>o.classList.toggle('on',o===b));settings[g]=g==='len'?+b.dataset.v:b.dataset.v;if(g==='stick')syncStick()}));
-function syncStick(){try{localStorage.setItem('pf95_stick',settings.stick)}catch(e){}
-  document.querySelectorAll('.opt[data-g="stick"]').forEach(o=>o.classList.toggle('on',o.dataset.v===settings.stick));
-  $('#stickBtn').textContent='Джойстик: '+(settings.stick==='fixed'?'фиксированный':'подвижный')}
-$('#stickBtn').onclick=()=>{settings.stick=settings.stick==='fixed'?'float':'fixed';syncStick()};syncStick();
-function startGame(){auInit();$('#menu').classList.add('hidden');$('#end').classList.add('hidden');$('#pause').classList.add('hidden');ui.classList.remove('hidden');newMatch();running=true;paused=false;fit();
+/* ---------- save data ---------- */
+const LS={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return null}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+function freshStats(){return{v:1,clubs:{},matches:0,w:0,d:0,l:0,gf:0,ga:0,seconds:0,days:[],history:[],scorers:{},trophies:{},bestWin:null,mostGoals:0,training:{sessions:0,goals:0}}}
+let stats=Object.assign(freshStats(),LS.get('pf95_stats')||{});
+const saveStats=()=>LS.set('pf95_stats',stats);
+{const sv=LS.get('pf95_settings');if(sv){for(const k of ['team','len','diff','stick'])if(sv[k]!=null)settings[k]=sv[k];if(sv.sound===false)AU.on=false}}
+const saveSettings=()=>LS.set('pf95_settings',{team:settings.team,len:settings.len,diff:settings.diff,stick:settings.stick,sound:AU.on});
+function today(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
+function dayNum(s){const a=s.split('-').map(Number);return Math.round(Date.UTC(a[0],a[1]-1,a[2])/864e5)}
+function markDay(){const t=today();if(!stats.days.includes(t)){stats.days.push(t);if(stats.days.length>3000)stats.days.shift()}if(streakInfo().best>=7)unlock('days7');saveStats()}
+function streakInfo(){const ns=[...new Set(stats.days)].map(dayNum).sort((a,b)=>a-b);let best=0,run=0,prev=null;for(const n of ns){run=(prev!==null&&n===prev+1)?run+1:1;best=Math.max(best,run);prev=n}
+  const t=dayNum(today());return{total:ns.length,best,cur:(prev===t||prev===t-1)?run:0}}
+const TROPHIES=[['first_win','🏆','Первая победа','Выиграй любой матч'],['clean','🧤','Сухой матч','Победи, не пропустив'],['big_win','💥','Разгром','Победа с разницей 3+'],
+  ['hattrick','🎩','Хет-трик','3 гола одного игрока'],['comeback','🔥','Камбэк','Отыграйся и победи'],['hard_win','⭐','Мастер','Победа на «Сложно»'],
+  ['m10','🔟','Ветеран','Сыграй 10 матчей'],['m50','🏟️','Легенда','Сыграй 50 матчей'],['days7','📅','Неделя футбола','7 дней подряд'],['train25','🎯','Снайпер','25 голов на тренировке']];
+let newTro=[];
+function unlock(id){if(!stats.trophies[id]){stats.trophies[id]=today();newTro.push(id)}}
+function recordMatch(){const h=humanTeam();if(!h||G.training||G.recorded)return;G.recorded=true;const o=other(h),gf=h.score,ga=o.score,r=gf>ga?'w':gf<ga?'l':'d';
+  stats.matches++;stats[r]++;stats.gf+=gf;stats.ga+=ga;stats.clubs[h.key]=(stats.clubs[h.key]||0)+1;stats.mostGoals=Math.max(stats.mostGoals,gf);
+  stats.history.unshift({d:today(),me:h.key,op:o.key,gf,ga,df:settings.diff});stats.history=stats.history.slice(0,30);
+  if(r==='w'&&(!stats.bestWin||gf-ga>stats.bestWin.gf-stats.bestWin.ga||(gf-ga===stats.bestWin.gf-stats.bestWin.ga&&gf>stats.bestWin.gf)))stats.bestWin={gf,ga,me:h.key,op:o.key,d:today()};
+  if(r==='w'){unlock('first_win');if(ga===0)unlock('clean');if(gf-ga>=3)unlock('big_win');if(G.trailed)unlock('comeback');if(settings.diff==='hard')unlock('hard_win')}
+  if(Object.values(G.mg).some(n=>n>=3))unlock('hattrick');if(stats.matches>=10)unlock('m10');if(stats.matches>=50)unlock('m50');saveStats()}
+function syncStick(){saveSettings();$('#stickBtn').textContent='Джойстик: '+(settings.stick==='fixed'?'фиксированный':'подвижный')}
+$('#stickBtn').onclick=()=>{settings.stick=settings.stick==='fixed'?'float':'fixed';syncStick()};
+$('#sound').textContent='Звук: '+(AU.on?'вкл':'выкл');
+
+/* ---------- menu ---------- */
+const svg=(b)=>`<svg viewBox="0 0 48 48" xmlns="http://www.w3.org/2000/svg">${b}</svg>`;
+const IC={
+ match:svg('<circle cx="24" cy="24" r="19" fill="none" stroke="currentColor" stroke-width="3"/><path d="M24 15l8 6-3 9.5H19L16 21z" fill="currentColor"/><path d="M24 15V6M32 21l8.5-3M29 30.5l5 7.5M19 30.5l-5 7.5M16 21l-8.5-3" stroke="currentColor" stroke-width="2.6" fill="none"/>'),
+ career:svg('<path d="M5 41h10V31h10V21h10V11h8" fill="none" stroke="currentColor" stroke-width="3.6" stroke-linejoin="round"/><path d="M37 2.5l2.4 4.9 5.4.8-3.9 3.8.9 5.4-4.8-2.5-4.8 2.5.9-5.4-3.9-3.8 5.4-.8z" fill="currentColor"/>'),
+ club:svg('<path d="M24 4l17 6v12c0 11-7.5 18.5-17 22C14.5 40.5 7 33 7 22V10z" fill="none" stroke="currentColor" stroke-width="3"/><path d="M24 12.5l3 6.4 7 .8-5.2 4.8 1.4 6.9-6.2-3.5-6.2 3.5 1.4-6.9-5.2-4.8 7-.8z" fill="currentColor"/>'),
+ training:svg('<path d="M7 40l6.5-21h4.2L24 40z" fill="currentColor"/><path d="M25 40l6.5-21h4.2L42 40z" fill="currentColor" opacity=".75"/><rect x="3" y="40" width="42" height="3.5" rx="1.5" fill="currentColor"/><path d="M10.6 31.5h10.6M28.6 31.5h10.6" stroke="#0e3f86" stroke-width="2.6"/><circle cx="38" cy="9" r="4.5" fill="none" stroke="currentColor" stroke-width="2.4"/>'),
+ museum:svg('<path d="M24 3L3 13.5V18h42v-4.5z" fill="currentColor"/><g fill="currentColor"><rect x="7.5" y="20" width="5" height="16"/><rect x="16.5" y="20" width="5" height="16"/><rect x="26.5" y="20" width="5" height="16"/><rect x="35.5" y="20" width="5" height="16"/><rect x="3" y="38" width="42" height="5"/></g>'),
+ settings:svg('<g fill="currentColor">'+[0,45,90,135,180,225,270,315].map(a=>`<rect x="20.5" y="2.5" width="7" height="10" rx="1.5" transform="rotate(${a} 24 24)"/>`).join('')+'<circle cx="24" cy="24" r="14"/></g><circle cx="24" cy="24" r="5.5" fill="#0e3f86"/>'),
+ about:svg('<circle cx="24" cy="24" r="19" fill="none" stroke="currentColor" stroke-width="3"/><circle cx="24" cy="14.5" r="3.2" fill="currentColor"/><rect x="20.8" y="20.5" width="6.4" height="16" rx="1.6" fill="currentColor"/>')};
+const HOME=[
+ {id:'match',t:'Матч',d:'Быстрый матч против компьютера: выбери клуб и выходи на поле.'},
+ {id:'career',t:'Карьера',d:'Проведи свой клуб через сезоны, трансферы и турниры. Скоро!',soon:1},
+ {id:'club',t:'Клуб',d:'Любимый клуб, управляемые клубы, трофеи, минуты в игре, все матчи и серия дней.'},
+ {id:'training',t:'Тренировка',d:'Отрабатывай удары, пасы и дриблинг против вратаря без ограничения времени.'},
+ {id:'museum',t:'Музей',d:'История твоих матчей, рекорды и лучшие бомбардиры.'},
+ {id:'settings',t:'Настройки',d:'Длина тайма, сложность, джойстик и звук.'},
+ {id:'about',t:'Об игре',d:'Управление, версия и титры.'}];
+let homeSel=0;
+function hexTile(stroke,fill){const r=13,w=Math.round(3*r),h=Math.round(Math.sqrt(3)*r),c=document.createElement('canvas');c.width=w;c.height=h;const x=c.getContext('2d');
+  const hex=(cx,cy)=>{x.beginPath();for(let i=0;i<6;i++){const a=Math.PI/3*i;x.lineTo(cx+Math.cos(a)*(r-1.2),cy+Math.sin(a)*(r-1.2))}x.closePath();if(fill){x.fillStyle=fill;x.fill()}if(stroke){x.strokeStyle=stroke;x.lineWidth=1.2;x.stroke()}};
+  for(const [cx,cy] of [[0,0],[w,0],[0,h],[w,h],[1.5*r,h/2],[1.5*r,-h/2],[1.5*r,1.5*h]])hex(cx,cy);return `url(${c.toDataURL()})`}
+try{document.documentElement.style.setProperty('--hex',hexTile('rgba(255,255,255,.09)'));document.documentElement.style.setProperty('--hexg',hexTile('rgba(255,215,60,.35)','rgba(255,200,40,.22)'))}catch(e){}
+function buildHome(){const row=$('#icons');row.innerHTML='';HOME.forEach((it,i)=>{const b=document.createElement('button');b.className='hi'+(it.soon?' soon':'');b.innerHTML=IC[it.id]+`<span>${it.t}</span>`;
+  b.addEventListener('click',()=>{auInit();if(homeSel===i)openItem(i);else selHome(i)});row.appendChild(b)});selHome(homeSel,true)}
+function selHome(i,quiet){homeSel=(i+HOME.length)%HOME.length;const it=HOME[homeSel];$('#rTitle').textContent=it.t;$('#embIcon').innerHTML=IC[it.id];$('#embLbl').textContent=it.t;$('#desc').textContent=it.d;
+  [...$('#icons').children].forEach((c,k)=>c.classList.toggle('on',k===homeSel));if(!quiet)tone(900,.05,'square',.03)}
+$('#homeGo').onclick=()=>{auInit();openItem(homeSel)};$('#emb').onclick=()=>{auInit();openItem(homeSel)};
+function openSub(id,title,html,after){$('#home').classList.add('hidden');$('#sub').classList.remove('hidden');$('#shIcon').innerHTML=IC[id];$('#shTitle').textContent=title;const b=$('#sbody');b.innerHTML=html;b.scrollTop=0;if(after)after(b);tone(660,.06,'square',.03)}
+function backHome(){$('#sub').classList.add('hidden');$('#home').classList.remove('hidden');tone(440,.05,'square',.03)}
+$('#subBack').onclick=backHome;
+const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
+const crest=(k,small)=>{const c=k==='LEE'?['#f2f2f2','#2563eb']:['#d7191f','#f2f2f2'];return `<span class="crest${small?' s':''}" style="--a:${c[0]};--b:${c[1]}"></span>`};
+const DN={easy:'Легко',normal:'Норма',hard:'Сложно'};
+function clubPicker(){return `<div class="pnl wide"><div class="ph">Выбери клуб</div><div class="clubs">${Object.keys(KITS).map(k=>`<button class="club${settings.team===k?' on':''}" data-k="${k}">${crest(k)}<span>${KITS[k].name}<small>${k==='LEE'?'Белые':'Красные'} · сыграно ${stats.clubs[k]||0}</small></span></button>`).join('')}</div></div>`}
+function bindClubs(b){b.querySelectorAll('.club').forEach(c=>c.onclick=()=>{settings.team=c.dataset.k;saveSettings();b.querySelectorAll('.club').forEach(x=>x.classList.toggle('on',x===c));const o=b.querySelector('#oppName');if(o)o.textContent=KITS[settings.team==='LEE'?'MUN':'LEE'].name;tone(760,.04,'square',.03)})}
+function openItem(i){const id=HOME[i].id;
+ if(id==='match')openSub(id,'Матч',clubPicker()+`<div class="pnl"><div class="ph">Параметры матча</div><div class="kv"><span>Соперник</span><b id="oppName">${KITS[settings.team==='LEE'?'MUN':'LEE'].name}</b></div><div class="kv"><span>Длина тайма</span><b>${settings.len} мин</b></div><div class="kv"><span>Сложность</span><b>${DN[settings.diff]}</b></div></div>
+   <div class="pnl"><div class="ph">Твой клуб</div><div class="kv"><span>Матчей</span><b>${stats.matches}</b></div><div class="kv"><span>В / Н / П</span><b style="white-space:nowrap">${stats.w} / ${stats.d} / ${stats.l}</b></div></div>
+   <button class="bigbtn" id="goMatch">▶ Начать матч</button>`,b=>{bindClubs(b);b.querySelector('#goMatch').onclick=()=>startGame('match')});
+ else if(id==='career')openSub(id,'Карьера',`<div class="pnl wide"><div class="big">Скоро</div><div class="muted" style="margin-top:8px">Режим карьеры появится в следующих версиях игры.</div></div>
+   <div class="pnl"><div class="ph">Что будет</div><div class="kv"><span>Сезоны и таблица лиги</span><b>⏳</b></div><div class="kv"><span>Трансферы игроков</span><b>⏳</b></div><div class="kv"><span>Кубки и турниры</span><b>⏳</b></div><div class="kv"><span>Развитие игроков</span><b>⏳</b></div></div>`);
+ else if(id==='club')openClub();
+ else if(id==='training')openSub(id,'Тренировка',clubPicker()+`<div class="pnl"><div class="ph">Как это работает</div><div class="muted">На поле только твоя команда и вратарь соперника. Время не ограничено: бей, пасуй, обводи. После гола или аута мяч снова у твоего нападающего. Выйти — пауза → «В меню».</div></div>
+   <div class="pnl"><div class="ph">Твоя статистика</div><div class="kv"><span>Тренировок</span><b>${stats.training.sessions}</b></div><div class="kv"><span>Голов на тренировках</span><b>${stats.training.goals}</b></div><div class="kv"><span>До трофея «Снайпер»</span><b>${Math.max(0,25-stats.training.goals)}</b></div></div>
+   <button class="bigbtn" id="goTrain">▶ Начать тренировку</button>`,b=>{bindClubs(b);b.querySelector('#goTrain').onclick=()=>startGame('training')});
+ else if(id==='museum')openMuseum();
+ else if(id==='settings')openSettings();
+ else if(id==='about')openAbout();}
+function openClub(){const si=streakInfo(),ks=Object.keys(stats.clubs).filter(k=>KITS[k]);let fav=null;for(const k of ks)if(!fav||stats.clubs[k]>stats.clubs[fav])fav=k;
+ const m=stats.matches||0,pc=v=>m?(v/m*100):0,got=TROPHIES.filter(t=>stats.trophies[t[0]]).length,mins=Math.floor(stats.seconds/60);
+ openSub('club','Клуб',`
+ <div class="pnl"><div class="ph">Любимый клуб</div>${fav?`<div class="favc">${crest(fav)}<div><div class="big">${KITS[fav].name}</div><div class="unit">${stats.clubs[fav]} матч(ей) за клуб</div></div></div>`:'<div class="muted">Сыграй матч — клуб, за который играешь чаще всего, станет любимым.</div>'}</div>
+ <div class="pnl"><div class="ph">Управляемые клубы</div>${Object.keys(KITS).map(k=>`<div class="kv" style="${stats.clubs[k]?'':'opacity:.5'}"><span>${crest(k,true)}${KITS[k].name}</span><b>${stats.clubs[k]||0} матч.</b></div>`).join('')}</div>
+ <div class="pnl"><div class="ph">Минуты в игре</div><div class="big">${mins}<span class="unit">мин</span></div><div class="unit">≈ ${(stats.seconds/3600).toFixed(1)} ч в матчах и на тренировках</div></div>
+ <div class="pnl"><div class="ph">Все матчи</div><div class="big">${m}</div><div class="bar"><i class="w" style="width:${pc(stats.w)}%"></i><i class="d" style="width:${pc(stats.d)}%"></i><i class="l" style="width:${pc(stats.l)}%"></i></div>
+   <div class="kv"><span>Победы</span><b>${stats.w}</b></div><div class="kv"><span>Ничьи</span><b>${stats.d}</b></div><div class="kv"><span>Поражения</span><b>${stats.l}</b></div><div class="kv"><span>Голы: забито / пропущено</span><b>${stats.gf} / ${stats.ga}</b></div></div>
+ <div class="pnl"><div class="ph">Серия дней</div><div class="kv"><span>Дней в игре</span><b>${si.total}</b></div><div class="kv"><span>Текущая серия</span><b>${si.cur} 🔥</b></div><div class="kv"><span>Самая длинная серия</span><b>${si.best}</b></div></div>
+ <div class="pnl wide"><div class="ph">Трофеи · ${got} из ${TROPHIES.length}</div><div class="tro">${TROPHIES.map(t=>`<div class="t${stats.trophies[t[0]]?' got':''}"><i>${t[1]}</i>${t[2]}<small>${stats.trophies[t[0]]?stats.trophies[t[0]].split('-').reverse().join('.'):t[3]}</small></div>`).join('')}</div></div>`)}
+function openMuseum(){const hs=stats.history,sc=Object.entries(stats.scorers).sort((a,b)=>b[1]-a[1]).slice(0,6),bw=stats.bestWin;
+ openSub('museum','Музей',`
+ <div class="pnl wide"><div class="ph">История матчей</div>${hs.length?hs.slice(0,12).map(h=>{const r=h.gf>h.ga?'w':h.gf<h.ga?'l':'d';return `<div class="hrow"><span class="dt">${h.d.split('-').reverse().slice(0,2).join('.')}</span><span>${crest(h.me,true)}${KITS[h.me]?KITS[h.me].name:h.me} — ${KITS[h.op]?KITS[h.op].name:h.op} <span class="unit">${DN[h.df]||''}</span></span><span class="sc ${r}">${h.gf} : ${h.ga}</span></div>`}).join(''):'<div class="muted">Здесь появятся твои сыгранные матчи.</div>'}</div>
+ <div class="pnl"><div class="ph">Рекорды</div><div class="kv"><span>Крупнейшая победа</span><b>${bw?bw.gf+' : '+bw.ga:'—'}</b></div><div class="kv"><span>Больше всего голов в матче</span><b>${stats.mostGoals||0}</b></div><div class="kv"><span>Всего забито</span><b>${stats.gf}</b></div><div class="kv"><span>Средний счёт</span><b>${stats.matches?(stats.gf/stats.matches).toFixed(1)+' : '+(stats.ga/stats.matches).toFixed(1):'—'}</b></div></div>
+ <div class="pnl"><div class="ph">Лучшие бомбардиры</div>${sc.length?sc.map((e,i)=>`<div class="kv"><span>${i===0?'👑 ':''}${esc(e[0])}</span><b>${e[1]} ⚽</b></div>`).join(''):'<div class="muted">Забей первый гол в матче.</div>'}</div>`)}
+const OPTS={len:[[2,'2 мин'],[3,'3 мин'],[5,'5 мин'],[8,'8 мин']],diff:[['easy','Легко'],['normal','Норма'],['hard','Сложно']],stick:[['fixed','Фиксированный'],['float','Подвижный']],sound:[[true,'Вкл'],[false,'Выкл']]};
+const getOpt=k=>k==='sound'?AU.on:settings[k];
+function setOpt(k,v){if(k==='sound'){AU.on=v;if(AU.master)AU.master.gain.value=v?0.55:0;$('#sound').textContent='Звук: '+(v?'вкл':'выкл')}else settings[k]=v;if(k==='stick')syncStick();saveSettings()}
+function openSettings(){const row=(k,l)=>{const o=OPTS[k],i=Math.max(0,o.findIndex(x=>x[0]===getOpt(k)));return `<div class="srow"><span>${l}</span><div class="sel" data-k="${k}"><button data-d="-1">◀</button><b>${o[i][1]}</b><button data-d="1">▶</button></div></div>`};
+ openSub('settings','Настройки',`<div class="pnl wide"><div class="ph">Игра</div>${row('len','Длина тайма')}${row('diff','Сложность')}</div>
+ <div class="pnl wide"><div class="ph">Управление и звук</div>${row('stick','Джойстик')}${row('sound','Звук')}</div>
+ <div class="pnl wide"><div class="ph">Данные</div><div class="srow"><span>Сбросить статистику, трофеи и историю</span><div class="sel"><button class="danger" id="rst">Сбросить</button></div></div></div>`,b=>{
+  b.querySelectorAll('.sel[data-k]').forEach(el=>{const k=el.dataset.k,o=OPTS[k];el.querySelectorAll('button').forEach(bt=>bt.onclick=()=>{let i=o.findIndex(x=>x[0]===getOpt(k));i=(i+ +bt.dataset.d+o.length)%o.length;setOpt(k,o[i][0]);el.querySelector('b').textContent=o[i][1];tone(760,.04,'square',.03)})});
+  const r=b.querySelector('#rst');let armed=false;r.onclick=()=>{if(!armed){armed=true;r.textContent='Точно? Нажми ещё раз';return}stats=freshStats();saveStats();r.textContent='Сброшено ✓';r.disabled=true}})}
+function openAbout(){const help=isTouch?`<div class="kv"><span>Джойстик</span><b>бег</b></div><div class="kv"><span>Пас / Вразрез</span><b>пас / пас на ход</b></div><div class="kv"><span>Удар / Вынос</span><b>держи — сила</b></div><div class="kv"><span>Рывок</span><b>ускорение</b></div><div class="kv"><span>Курсор</span><b>смена игрока</b></div><div class="kv"><span>Сопровождать</span><b>закрыть соперника</b></div><div class="kv"><span>Рывок и прессинг</span><b>отбор мяча</b></div>`
+  :`<div class="kv"><span>Стрелки / WASD</span><b>бег</b></div><div class="kv"><span>X</span><b>пас / курсор</b></div><div class="kv"><span>C</span><b>вразрез / сопровождать</b></div><div class="kv"><span>Z / Пробел</span><b>удар / подкат</b></div><div class="kv"><span>Shift</span><b>рывок / прессинг</b></div><div class="kv"><span>P</span><b>пауза</b></div>`;
+ openSub('about','Об игре',`<div class="pnl wide"><div class="big">Пиксель Футбол '95</div><div class="unit" style="margin:4px 0 0">Версия 0.9 · ретро-футбол в духе 90-х</div></div>
+ <div class="pnl"><div class="ph">Управление</div>${help}</div>
+ <div class="pnl"><div class="ph">Титры</div><div class="kv"><span>Идея и тестирование</span><b>elturista0</b></div><div class="kv"><span>Код, графика, звук</span><b>Claude</b></div><div class="kv"><span>Движок</span><b>свой, HTML5 Canvas</b></div><div class="kv"><span>Звуки</span><b>синтез в игре</b></div></div>
+ <div class="pnl wide"><div class="ph">Примечание</div><div class="muted">Все имена игроков вымышлены, совпадения случайны. Названия клубов временные и будут заменены перед публикацией в магазине.</div></div>`)}
+buildHome();
+
+let lastMode='match';
+function hideScreens(){['#home','#sub','#end','#pause'].forEach(q=>$(q).classList.add('hidden'))}
+function startGame(mode){if(typeof mode!=='string')mode=lastMode;lastMode=mode;auInit();hideScreens();ui.classList.remove('hidden');newTro=[];newMatch(mode==='training');running=true;paused=false;
+  if(mode==='training')stats.training.sessions++;markDay();fit();
   if(isTouch){try{const d=document.documentElement,rq=d.requestFullscreen||d.webkitRequestFullscreen;if(rq&&!document.fullscreenElement){const pr=rq.call(d);if(pr&&pr.then)pr.then(()=>{try{screen.orientation&&screen.orientation.lock&&screen.orientation.lock('landscape').catch(()=>{})}catch(e){}}).catch(()=>{})}}catch(e){}}}
-$('#start').onclick=startGame;$('#again').onclick=startGame;
-function toMenu(){running=false;paused=false;G=null;ui.classList.add('hidden');$('#pause').classList.add('hidden');$('#end').classList.add('hidden');$('#menu').classList.remove('hidden');fit()}
+$('#again').onclick=()=>startGame(lastMode);
+function toMenu(){saveStats();running=false;paused=false;G=null;ui.classList.add('hidden');hideScreens();$('#home').classList.remove('hidden');selHome(homeSel,true);fit()}
 $('#quit').onclick=toMenu;$('#toMenu').onclick=toMenu;
-function setPause(v){if(!running)return;paused=v;$('#pause').classList.toggle('hidden',!v)}
+function setPause(v){if(!running)return;paused=v;$('#pause').classList.toggle('hidden',!v);if(v)saveStats()}
 $('#bPause').addEventListener('click',()=>setPause(true));$('#resume').onclick=()=>{auInit();setPause(false)};
-$('#sound').onclick=()=>{AU.on=!AU.on;$('#sound').textContent='Звук: '+(AU.on?'вкл':'выкл');if(AU.master)AU.master.gain.value=AU.on?0.55:0};
-document.addEventListener('visibilitychange',()=>{if(document.hidden)setPause(true)});
+$('#sound').onclick=()=>setOpt('sound',!AU.on);
+document.addEventListener('visibilitychange',()=>{if(document.hidden){setPause(true);saveStats()}});
 function showEnd(){const a=teams[0],b=teams[1],h=humanTeam();$('#endScore').textContent=`${a.kit.name} ${a.score} : ${b.score} ${b.kit.name}`;
-  let r='Ничья';if(h){const d=h.score-other(h).score;r=d>0?'Победа! 🏆':d<0?'Поражение':'Ничья'}$('#endRes').textContent=r;ui.classList.add('hidden');$('#end').classList.remove('hidden')}
+  let r='Ничья';if(h){const d=h.score-other(h).score;r=d>0?'Победа! 🏆':d<0?'Поражение':'Ничья'}$('#endRes').textContent=r;recordMatch();
+  $('#endTro').textContent=newTro.length?'Новый трофей: '+newTro.map(id=>{const t=TROPHIES.find(x=>x[0]===id);return t[1]+' '+t[2]}).join(', '):'';ui.classList.add('hidden');$('#end').classList.remove('hidden')}
 
 // joystick
 const stick=$('#stick'),base=$('#base'),knob=$('#knob');let sid=null,sx0=0,sy0=0;
@@ -669,7 +844,10 @@ bindBtn(b4,()=>{inp.sprintHeld=true},()=>{inp.sprintHeld=false});
 // keyboard
 const KX={ArrowLeft:-1,KeyA:-1,ArrowRight:1,KeyD:1},KY={ArrowUp:-1,KeyW:-1,ArrowDown:1,KeyS:1};
 function keyAxes(){let x=0,y=0;for(const k in inp.keys)if(inp.keys[k]){if(KX[k])x+=KX[k];if(KY[k])y+=KY[k]}inp.kx=clamp(x,-1,1);inp.ky=clamp(y,-1,1)}
-addEventListener('keydown',e=>{if(e.code in KX||e.code in KY){inp.keys[e.code]=true;keyAxes();e.preventDefault()}
+addEventListener('keydown',e=>{if(!running){const hv=!$('#home').classList.contains('hidden'),sv=!$('#sub').classList.contains('hidden');
+    if(hv){if(e.code==='ArrowRight'||e.code==='KeyD'){selHome(homeSel+1);return}if(e.code==='ArrowLeft'||e.code==='KeyA'){selHome(homeSel-1);return}if(e.code==='Enter'||e.code==='Space'){auInit();openItem(homeSel);e.preventDefault();return}}
+    if(sv&&(e.code==='Escape'||e.code==='Backspace')){backHome();return}}
+  if(e.code in KX||e.code in KY){inp.keys[e.code]=true;keyAxes();e.preventDefault()}
   if(e.repeat)return;if(e.code==='KeyX'||e.code==='KeyJ'){inp.passHit=true;auInit()}
   if(e.code==='KeyZ'||e.code==='KeyK'||e.code==='Space'){inp.shootHit=true;inp.shootHeld=true;e.preventDefault()}
   if(e.code==='KeyC'||e.code==='KeyL'){inp.thruHit=true;inp.thruHeld=true}
@@ -692,9 +870,9 @@ function updLabels(){if(!G)return;const c=G.ctrl;
   const wait=(G.state==='setpiece'&&G.ready&&G.sp.team.human&&G.sp.taker===c)||(G.state==='kickoff'&&G.kickTeam.human&&G.timer>0.4);b3.classList.toggle('pulse',!!wait)}
 
 /* ---------- loop ---------- */
-let last=performance.now(),acc=0;
+let last=performance.now(),acc=0,secAcc=0;
 function frame(now){try{const d=Math.min(0.1,(now-last)/1000);last=now;
-  if(running&&!paused){acc+=d;while(acc>=STEP){step(STEP);acc-=STEP}}else acc=0;
+  if(running&&!paused){acc+=d;while(acc>=STEP){step(STEP);acc-=STEP}stats.seconds+=d;secAcc+=d;if(secAcc>20){secAcc=0;saveStats()}}else acc=0;
   if(innerWidth!==fitW||innerHeight!==fitH)fit();
   render();updLabels()}catch(e){lastErr=String(e&&e.message||e);acc=0}finally{requestAnimationFrame(frame)}}
 document.addEventListener('fullscreenchange',()=>setTimeout(fit,120));
