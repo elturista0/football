@@ -168,8 +168,8 @@ const sfx={kick:()=>{nz(.05,.35,900);tone(170,.07,'triangle',.22,70)},shot:()=>{
 
 /* ---------- data ---------- */
 const FORM=[[0.02,0.5,'GK'],[0.2,0.14,'DEF'],[0.17,0.38,'DEF'],[0.17,0.62,'DEF'],[0.2,0.86,'DEF'],[0.42,0.14,'MID'],[0.37,0.4,'MID'],[0.37,0.6,'MID'],[0.42,0.86,'MID'],[0.6,0.4,'FWD'],[0.6,0.6,'FWD']];
-const KITS={LEE:{name:'Лидс',short:'LEE',shirt:'#f2f2f2',trim:'#2563eb',shorts:'#f2f2f2',socks:'#f2f2f2',gk:'#22a34a',dot:'#ffffff'},
-            MUN:{name:'Ман Юнайтед',short:'MUN',shirt:'#d7191f',trim:'#f2f2f2',shorts:'#f2f2f2',socks:'#151515',gk:'#8b5cf6',dot:'#ff4040'}};
+const KITS={LEE:{name:'Лидс',short:'LEE',shirt:'#f2f2f2',trim:'#2563eb',shorts:'#f2f2f2',socks:'#f2f2f2',gk:'#22a34a',dot:'#ffffff',names:['Tom Harlow','Callum Pryce','Josh Whitby','Liam Ashdown','Danny Reece','Kieran Moss','Ryan Colby','Sam Fenwick','Owen Bray','Jack Thornley','Max Kettering']},
+            MUN:{name:'Ман Юнайтед',short:'MUN',shirt:'#d7191f',trim:'#f2f2f2',shorts:'#f2f2f2',socks:'#151515',gk:'#8b5cf6',dot:'#ff4040',names:['Felix Hartmann','Luca Ferrante','Ben Rourke','Theo Marsden','Andre Silvano','Rafa Duarte','Nico Valdes','Marcus Lind','Elias Novak','Oscar Brandt','Milo Sandoval']}};
 const DIFF={easy:{react:0.75,tackle:0.2,shotErr:1.5,gk:0.55,spd:0.9},normal:{react:1,tackle:0.33,shotErr:1.1,gk:0.66,spd:0.98},hard:{react:1.3,tackle:0.48,shotErr:0.85,gk:0.78,spd:1.05}};
 const MATE={react:1,tackle:0.28,shotErr:1,gk:0.68,spd:1};
 const SKINS=['#f1c27d','#e0ac69','#c68642','#8d5524','#ffdbac'],HAIRS=['#2b1a0e','#141414','#6b4423','#d9b55a','#8a5a2b','#141414'];
@@ -195,7 +195,7 @@ function inOwnBox(p,pt){const f=rfx(p.team,pt.x);return f<0.135&&f>-0.03&&Math.a
 function msg(t,d,big){G.msg={txt:t,t:d,big:!!big}}
 
 function mkTeam(key,i){return{key,kit:KITS[key],idx:i,score:0,side:1,human:false,ai:MATE,players:[],chaser:null,support:null}}
-function mkPlayer(t,i){const f=FORM[i];return{team:t,i,role:f[2],bx:f[0],by:f[1],x:0,y:0,vx:0,vy:0,tvx:0,tvy:0,face:0,anim:Math.random()*2,
+function mkPlayer(t,i){const f=FORM[i];return{team:t,i,role:f[2],name:t.kit.names[i],num:[1,2,5,6,3,8,4,10,7,9,11][i],bx:f[0],by:f[1],x:0,y:0,vx:0,vy:0,tvx:0,tvy:0,face:0,anim:Math.random()*2,
   spd:(f[2]==='GK'?70:74)*rnd(0.94,1.06),stun:0,fallen:0,kickCd:0,slide:0,sdx:0,sdy:0,tackleCd:0,decCd:0,dive:0,diveDir:1,hold:0,spx:null,spy:null,skin:pick(SKINS),hair:pick(HAIRS)}}
 
 function newMatch(){
@@ -571,6 +571,7 @@ function drawFig(p,c){
   poly([J(0,-1.25,7.8+bob),J(0,1.25,7.8+bob),J(0.1,1.2,5.9+bob),J(0.1,-1.2,5.9+bob)],col.shorts,1.3*s);
   const t1=J(ln*0.9,-1.6,11.3+bob),t2=J(ln*0.9,1.6,11.3+bob);poly([t1,t2,J(0,1.3,7.6+bob),J(0,-1.3,7.6+bob)],col.shirt,1.5*s);
   if(!gk)seg(t1,t2,k.trim,0.5*s);
+  if(J(1,0,0)[3]>c[3]&&s>2.2){const m=J(ln*0.5,0,9.6+bob);ctx.save();ctx.fillStyle=gk?'#fff':(p.team.key==='MUN'?'#fff':'#14215a');ctx.font=`bold ${Math.round(2.6*s)}px Arial, sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(p.num,m[0],m[1]);ctx.restore()}
   if(farL)arm(1,sw);else arm(-1,-sw);
   const hc=J(ln*1.1+0.1,0,13.1+bob),hr=1.2*s;seg(J(ln,0,11.4+bob),hc,col.skin,0.9*s);dot(hc,hr,col.skin);
   ctx.fillStyle=p.hair;ctx.beginPath();if(J(1,0,0)[3]>c[3])ctx.arc(hc[0],hc[1],hr*1.03,0,7);else ctx.arc(hc[0],hc[1]-hr*0.12,hr*1.03,Math.PI*1.02,Math.PI*1.98);ctx.fill();
@@ -610,12 +611,16 @@ function render3(){
   drawGoal(PX0,1);drawGoal(PX1,-1);
   const list=[];for(const p of all){const c=P(p.x,p.y,0);if(c[0]>-60&&c[0]<W+60)list.push([c[3],p,c])}list.push([P(ball.x,ball.y,0)[3]-0.6,null,null]);
   list.sort((a,b)=>b[0]-a[0]);for(const e of list){if(e[1])drawFig(e[1],e[2]);else drawBall3()}
+  {const u=H/180;ctx.save();ctx.textAlign='center';ctx.textBaseline='bottom';ctx.font=`bold ${Math.round(7*u)}px Arial, sans-serif`;ctx.lineJoin='round';ctx.lineWidth=Math.max(2,1.6*u);
+    const lab=(p,z,col)=>{const c=P(p.x,p.y,z);if(c[0]<-50||c[0]>W+50)return;ctx.strokeStyle='rgba(0,0,0,.85)';ctx.strokeText(p.name,c[0],c[1]);ctx.fillStyle=col;ctx.fillText(p.name,c[0],c[1])};
+    const o=ball.owner;if(G.state!=='goal'&&G.state!=='fulltime'){if(cc)lab(cc,23,'#ffffff');if(o&&o!==cc)lab(o,17,o.team.human?'#ffffff':'#ffd9d9')}
+    ctx.restore()}
   if(cc&&G.state!=='fulltime'){const c=P(cc.x,cc.y,18.5),t=Math.max(5,1.4*c[2]);ctx.fillStyle='#4fe3ff';ctx.strokeStyle='#073040';ctx.lineWidth=Math.max(1,t*0.18);ctx.beginPath();ctx.moveTo(c[0]-t,c[1]-t*1.2);ctx.lineTo(c[0]+t,c[1]-t*1.2);ctx.lineTo(c[0],c[1]);ctx.closePath();ctx.fill();ctx.stroke();
     if(G.charging){const q=P(cc.x,cc.y,22),bw=Math.max(26,5*q[2]),bh=Math.max(4,0.8*q[2]);ctx.fillStyle='#000';ctx.fillRect(q[0]-bw/2-1,q[1]-bh-1,bw+2,bh+2);ctx.fillStyle=G.charge<0.6?'#7CFC00':G.charge<0.9?'#ffd400':'#ff3b30';ctx.fillRect(q[0]-bw/2,q[1]-bh,bw*G.charge,bh)}}
   hud3();minimap();
   if(G.msg){const m=G.msg,u=H/180;ctx.save();ctx.textAlign='center';ctx.textBaseline='middle';ctx.lineJoin='round';
     if(m.big){ctx.font=`900 italic ${30*u}px "Arial Black", Arial, sans-serif`;ctx.lineWidth=3.5*u;ctx.strokeStyle='#000';ctx.strokeText(m.txt,W/2,H*0.33);ctx.fillStyle=(Math.floor(performance.now()/130)&1)?'#ffe14d':'#fff';ctx.fillText(m.txt,W/2,H*0.33);
-      ctx.font=`bold italic ${10*u}px Arial, sans-serif`;const sl=teams[0].kit.short+'  '+teams[0].score+' : '+teams[1].score+'  '+teams[1].kit.short;ctx.lineWidth=2.5*u;ctx.strokeText(sl,W/2,H*0.33+24*u);ctx.fillStyle='#fff';ctx.fillText(sl,W/2,H*0.33+24*u)}
+      ctx.font=`bold italic ${10*u}px Arial, sans-serif`;const sl=teams[0].kit.short+'  '+teams[0].score+' : '+teams[1].score+'  '+teams[1].kit.short;ctx.lineWidth=2.5*u;ctx.strokeText(sl,W/2,H*0.33+24*u);ctx.fillStyle='#fff';ctx.fillText(sl,W/2,H*0.33+24*u);if(G.scorer){const sn='⚽ '+G.scorer.name+'  '+minute()+"'";ctx.font=`bold italic ${8*u}px Arial, sans-serif`;ctx.strokeText(sn,W/2,H*0.33+37*u);ctx.fillStyle='#ffe14d';ctx.fillText(sn,W/2,H*0.33+37*u)}}
     else{ctx.font=`900 italic ${13*u}px "Arial Black", Arial, sans-serif`;const w=ctx.measureText(m.txt).width;ctx.fillStyle='rgba(10,20,60,.7)';ctx.fillRect(W/2-w/2-10*u,H*0.33-10*u,w+20*u,20*u);ctx.fillStyle='#ffe14d';ctx.fillRect(W/2-w/2-10*u,H*0.33+9*u,w+20*u,1.5*u);ctx.fillStyle='#fff';ctx.fillText(m.txt,W/2,H*0.33)}
     ctx.restore()}
 }
