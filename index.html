@@ -34,15 +34,15 @@ h1{font-size:clamp(22px,5vw,32px);letter-spacing:2px;line-height:1.05;text-trans
 .res{font-size:14px;color:#9fbf98;text-transform:uppercase;letter-spacing:1px}
 #ui{position:fixed;inset:0;z-index:10;pointer-events:none}
 #stick{position:absolute;left:0;bottom:0;width:48%;height:72%;pointer-events:auto}
-#base{position:absolute;width:134px;height:134px;margin:-67px 0 0 -67px;border:3px solid rgba(255,255,255,.35);border-radius:50%;background:rgba(0,0,0,.2);left:calc(98px + env(safe-area-inset-left));top:calc(100% - 96px - env(safe-area-inset-bottom))}
-#knob{position:absolute;left:50%;top:50%;width:58px;height:58px;margin:-29px 0 0 -29px;border-radius:50%;background:rgba(255,255,255,.4);border:3px solid rgba(255,255,255,.75)}
+#base{position:absolute;width:162px;height:162px;margin:-81px 0 0 -81px;border:3px solid rgba(255,255,255,.35);border-radius:50%;background:rgba(0,0,0,.2);left:calc(110px + env(safe-area-inset-left));top:calc(100% - 106px - env(safe-area-inset-bottom))}
+#knob{position:absolute;left:50%;top:50%;width:70px;height:70px;margin:-35px 0 0 -35px;border-radius:50%;background:rgba(255,255,255,.4);border:3px solid rgba(255,255,255,.75)}
 .btn{position:absolute;pointer-events:auto;border-radius:50%;border:3px solid #000;box-shadow:0 4px 0 #000;font:inherit;font-weight:800;font-size:12px;color:#111;display:flex;align-items:center;justify-content:center;text-transform:uppercase;opacity:.85;touch-action:none}
-#pad{position:absolute;right:calc(14px + env(safe-area-inset-right));bottom:calc(12px + env(safe-area-inset-bottom));width:192px;height:192px;pointer-events:none}
-#pad .btn{width:80px;height:80px;border-radius:0;background:rgba(28,86,38,.32);border:2px solid rgba(6,26,10,.7);box-shadow:inset 0 0 0 2px rgba(127,211,107,.75),2px 2px 0 rgba(0,0,0,.5);color:#fff;font-size:12px;line-height:1.15;text-align:center;padding:4px;text-shadow:1px 1px 0 #000,0 0 3px #000;opacity:.85}
+#pad{position:absolute;right:calc(14px + env(safe-area-inset-right));bottom:calc(12px + env(safe-area-inset-bottom));width:212px;height:212px;pointer-events:none}
+#pad .btn{width:88px;height:88px;border-radius:0;background:rgba(28,86,38,.32);border:2px solid rgba(6,26,10,.7);box-shadow:inset 0 0 0 2px rgba(127,211,107,.75),2px 2px 0 rgba(0,0,0,.5);color:#fff;font-size:13px;line-height:1.15;text-align:center;padding:4px;text-shadow:1px 1px 0 #000,0 0 3px #000;opacity:.85}
 #pad .btn.down{transform:translate(3px,3px);box-shadow:inset 0 0 0 2px #c8ff9e,1px 1px 0 #000;background:rgba(58,140,64,.95);opacity:1}
 #pad.def .btn{background:rgba(26,58,96,.32);box-shadow:inset 0 0 0 2px rgba(127,182,255,.75),2px 2px 0 rgba(0,0,0,.5)}
 #pad.def .btn.down{background:rgba(50,100,160,.95);box-shadow:inset 0 0 0 2px #cfe4ff,1px 1px 0 #000}
-#b1{left:0;top:0}#b2{right:11px;top:0}#b3{left:0;bottom:11px}#pad #b4{right:0;bottom:0;width:102px;height:102px;font-size:14px}
+#b1{left:0;top:0}#b2{right:12px;top:0}#b3{left:0;bottom:12px}#pad #b4{right:0;bottom:0;width:112px;height:112px;font-size:15px}
 #b2.shoot{background:rgba(170,40,32,.45)!important;box-shadow:inset 0 0 0 2px rgba(255,154,138,.85),2px 2px 0 rgba(0,0,0,.5)!important}
 #bPause{position:absolute;pointer-events:auto;top:calc(6px + env(safe-area-inset-top));left:50%;transform:translateX(-50%);width:44px;height:28px;background:rgba(0,0,0,.55);border:2px solid rgba(255,255,255,.6);color:#fff;font:inherit;font-weight:800;font-size:13px}
 .pulse{animation:pulse .5s infinite alternate}
@@ -643,7 +643,7 @@ function showEnd(){const a=teams[0],b=teams[1],h=humanTeam();$('#endScore').text
 
 // joystick
 const stick=$('#stick'),base=$('#base'),knob=$('#knob');let sid=null,sx0=0,sy0=0;
-function stUpd(e){let dx=e.clientX-sx0,dy=e.clientY-sy0;const d=hyp(dx,dy),RR=58;if(d>RR){dx=dx/d*RR;dy=dy/d*RR}knob.style.transform=`translate(${dx}px,${dy}px)`;inp.tx=dx/RR;inp.ty=dy/RR}
+function stUpd(e){let dx=e.clientX-sx0,dy=e.clientY-sy0;const d=hyp(dx,dy),RR=70;if(d>RR){dx=dx/d*RR;dy=dy/d*RR}knob.style.transform=`translate(${dx}px,${dy}px)`;inp.tx=dx/RR;inp.ty=dy/RR}
 stick.addEventListener('pointerdown',e=>{e.preventDefault();auInit();sid=e.pointerId;try{stick.setPointerCapture(sid)}catch(_){}if(settings.stick==='fixed'){const br=base.getBoundingClientRect();sx0=br.left+br.width/2;sy0=br.top+br.height/2}else{const r=stick.getBoundingClientRect();sx0=e.clientX;sy0=e.clientY;base.style.left=(e.clientX-r.left)+'px';base.style.top=(e.clientY-r.top)+'px'}stUpd(e)});
 stick.addEventListener('pointermove',e=>{if(e.pointerId===sid)stUpd(e)});
 const stEnd=e=>{if(e.pointerId!==sid)return;sid=null;inp.tx=inp.ty=0;knob.style.transform='';base.style.left='';base.style.top=''};
