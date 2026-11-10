@@ -119,6 +119,17 @@ h1{font-size:clamp(22px,5vw,32px);letter-spacing:2px;line-height:1.05;text-trans
 .back:before{content:"◀";display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:#fff;color:#0c3877;font-size:11px;text-shadow:none}
 .danger{background:#7f1d1d!important;border-color:#f87171!important;width:auto!important;padding:0 12px}
 .hl{color:#ffe14d}
+.wide-club{width:100%;margin-top:4px}.wide-club em{margin-left:auto;font:800 12px Arial;color:#ffe14d;font-style:normal;white-space:nowrap}
+.stars{color:#ffd24d;letter-spacing:1px}
+.row2{display:flex;gap:8px;margin-top:10px}.mini{flex:1;background:#0c3877;border:2px solid #4a9cff;color:#fff;font:800 13px Arial,sans-serif;padding:8px;cursor:pointer}
+.tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:10px}.tab{background:#0c3877;border:2px solid #4a9cff;color:#cfe6ff;font:800 italic 13px Arial,sans-serif;padding:7px 12px;text-transform:uppercase;cursor:pointer}.tab.on{background:#ffe14d;border-color:#ffe14d;color:#111}
+.cgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:6px}
+.cc{display:flex;align-items:center;gap:4px;background:rgba(0,0,0,.28);border:2px solid rgba(255,255,255,.15);color:#fff;font:700 12px Arial,sans-serif;padding:7px 8px;text-align:left;cursor:pointer}
+.cc span:not(.crest){flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cc b{font:900 italic 13px Arial;color:#ffe14d}.cc.on{border-color:#ffe14d;background:rgba(255,225,77,.16)}.cc:disabled{opacity:.3}
+.xi{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:0 14px}
+.pl{display:flex;align-items:center;gap:8px;padding:4px 0;border-bottom:1px solid rgba(255,255,255,.08);font:700 13px Arial,sans-serif}
+.pp{font:900 10px Arial;padding:2px 4px;min-width:26px;text-align:center}.pp.GK{background:#ca8a04}.pp.DEF{background:#1d4ed8}.pp.MID{background:#15803d}.pp.FWD{background:#b91c1c}
+.pn{color:#a9d0ff;min-width:20px;text-align:right}.pm{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.pl b{font-style:italic;color:#ffe14d}
 .ov .panel{background:var(--hex),linear-gradient(180deg,rgba(24,82,165,.95),rgba(9,38,88,.97));border:3px solid #5aaaff;box-shadow:none;clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px));font-family:Arial,Helvetica,sans-serif}
 .ov h1{color:#fff;font:900 italic clamp(22px,6vh,32px)/1.1 Arial,sans-serif;text-shadow:2px 2px 0 rgba(0,0,0,.5);border-left:5px solid #ffe14d;padding-left:10px}
 .ov .go{background:linear-gradient(#ffe866,#f2bf00);border:0;box-shadow:none;font:900 italic 18px Arial,sans-serif;clip-path:polygon(14px 0,100% 0,calc(100% - 14px) 100%,0 100%)}
@@ -230,13 +241,145 @@ const sfx={kick:()=>{nz(.05,.35,900);tone(170,.07,'triangle',.22,70)},shot:()=>{
 
 /* ---------- data ---------- */
 const FORM=[[0.02,0.5,'GK'],[0.2,0.14,'DEF'],[0.17,0.38,'DEF'],[0.17,0.62,'DEF'],[0.2,0.86,'DEF'],[0.42,0.14,'MID'],[0.37,0.4,'MID'],[0.37,0.6,'MID'],[0.42,0.86,'MID'],[0.6,0.4,'FWD'],[0.6,0.6,'FWD']];
-const KITS={LEE:{name:'Лидс',short:'LEE',shirt:'#f2f2f2',trim:'#2563eb',shorts:'#f2f2f2',socks:'#f2f2f2',gk:'#22a34a',dot:'#ffffff',names:['Tom Harlow','Callum Pryce','Josh Whitby','Liam Ashdown','Danny Reece','Kieran Moss','Ryan Colby','Sam Fenwick','Owen Bray','Jack Thornley','Max Kettering']},
-            MUN:{name:'Ман Юнайтед',short:'MUN',shirt:'#d7191f',trim:'#f2f2f2',shorts:'#f2f2f2',socks:'#151515',gk:'#8b5cf6',dot:'#ff4040',names:['Felix Hartmann','Luca Ferrante','Ben Rourke','Theo Marsden','Andre Silvano','Rafa Duarte','Nico Valdes','Marcus Lind','Elias Novak','Oscar Brandt','Milo Sandoval']}};
+/* ---------- leagues & clubs (fictional names) ---------- */
+const LEAGUES=[{id:'EN',name:'Англия',nat:'EN'},{id:'ES',name:'Испания',nat:'ES'},{id:'IT',name:'Италия',nat:'IT'},{id:'DE',name:'Германия',nat:'DE'},{id:'FR',name:'Франция',nat:'FR'}];
+const CLUB_DATA={
+EN:`LEE|Йоркшир Уайт|YRK|#f2f2f2|#2563eb|#f2f2f2|#f2f2f2|76|
+MUN|Манчестер Ред|MRD|#d7191f|#f2f2f2|#f2f2f2|#151515|84|
+MCB|Манчестер Блю|MBL|#6cabdd|#ffffff|#ffffff|#6cabdd|90|
+NLR|Норт Лондон|NLD|#e3221b|#ffffff|#ffffff|#ffffff|88|
+WLB|Вест Лондон|WLN|#1d4ed8|#ffffff|#1d4ed8|#ffffff|84|
+MSR|Мерсисайд Ред|MSR|#c8102e|#f6eb61|#c8102e|#c8102e|89|
+MSB|Мерсисайд Блю|MSB|#274488|#ffffff|#ffffff|#ffffff|74|
+LWH|Лондон Уайт|LWH|#f5f5f5|#132257|#132257|#f5f5f5|83|
+TYN|Тайнсайд|TYN|#f2f2f2|#111111|#111111|#111111|83|s
+BCL|Бирмингем Кларет|BCL|#7a1e3a|#94bee5|#ffffff|#7a1e3a|82|
+ELO|Ист Лондон|ELO|#7a263a|#1bb1e7|#ffffff|#7a263a|78|
+SSX|Сассекс|SSX|#0057b8|#ffffff|#0057b8|#0057b8|80|s
+MGL|Мидлендс Голд|MGL|#fdb913|#231f20|#231f20|#fdb913|76|
+NTT|Ноттингем|NTT|#dd0000|#ffffff|#ffffff|#dd0000|79|
+SCO|Саут Кост|SCO|#da291c|#111111|#111111|#111111|77|s
+SLO|Саут Лондон|SLO|#1b458f|#c4122e|#1b458f|#1b458f|77|s
+TMS|Темза|TMS|#ffffff|#111111|#111111|#ffffff|76|
+MDX|Мидлсекс|MDX|#e30613|#ffffff|#111111|#e30613|76|s
+LCS|Лестершир|LCS|#003090|#fdbe11|#ffffff|#003090|72|
+HMP|Хэмпшир|HMP|#d71920|#ffffff|#111111|#d71920|71|s`,
+ES:`MDW|Мадрид Уайт|MDW|#ffffff|#fcbf00|#ffffff|#ffffff|90|
+CAT|Каталония|CAT|#a50044|#004d98|#004d98|#a50044|89|s
+MRW|Мадрид Ред|MRW|#cb3524|#ffffff|#1c2c5b|#cb3524|85|s
+SVW|Севилья Уайт|SVW|#ffffff|#d4021d|#ffffff|#ffffff|77|
+SVG|Севилья Грин|SVG|#00954c|#ffffff|#ffffff|#00954c|79|s
+TUR|Турия|TUR|#ffffff|#111111|#111111|#ffffff|76|
+BAS|Басконья|BAS|#ee2523|#ffffff|#111111|#111111|81|s
+GIP|Гипускоа|GIP|#0067b1|#ffffff|#ffffff|#0067b1|80|s
+CAS|Кастельон|CAS|#ffe667|#005187|#ffe667|#ffe667|80|
+GAL|Галисия|GAL|#8ac3ee|#e5254e|#ffffff|#8ac3ee|75|
+AMP|Ампурдан|AMP|#e1251b|#ffffff|#ffffff|#e1251b|76|s
+BAL|Балеары|BAL|#e20613|#111111|#111111|#111111|74|
+NAV|Наварра|NAV|#d91a21|#0a346f|#0a346f|#0a346f|75|
+MSU|Мадрид Юг|MSU|#005999|#ffffff|#005999|#005999|73|
+VLC|Вальекас|VLC|#ffffff|#e53027|#ffffff|#ffffff|74|
+CNR|Канарии|CNR|#ffe400|#0055a4|#0055a4|#ffe400|71|
+VIT|Витория|VIT|#0761af|#ffffff|#0761af|#0761af|72|s
+LLB|Льобрегат|LLB|#007fc8|#ffffff|#007fc8|#007fc8|72|s
+CST|Кастилья|CST|#5f259f|#ffffff|#ffffff|#5f259f|70|s
+MVE|Мадрид Зелёные|MVE|#00a650|#ffffff|#1d1d1b|#00a650|69|s`,
+IT:`MRN|Милано Красно-Чёрные|MRN|#fb090b|#111111|#ffffff|#111111|85|s
+MNZ|Милано Сине-Чёрные|MNZ|#0068a8|#111111|#111111|#111111|88|s
+PZB|Пьемонт Зебры|PZB|#ffffff|#111111|#111111|#ffffff|86|s
+RGR|Рим Гранат|RGR|#8e1f2f|#f0bc42|#ffffff|#111111|82|
+RCE|Рим Небесные|RCE|#87d8f7|#ffffff|#ffffff|#87d8f7|81|
+CMP|Кампания|CMP|#12a0d7|#ffffff|#ffffff|#12a0d7|86|
+TSF|Тоскана|TSF|#482e92|#ffffff|#ffffff|#482e92|79|
+BRG|Бергамо|BRG|#1e71b8|#111111|#111111|#111111|84|s
+EML|Эмилия|EML|#a21c26|#1a2f48|#ffffff|#1a2f48|80|s
+PGR|Пьемонт Гранат|PGR|#8a1e03|#ffffff|#ffffff|#8a1e03|76|
+LIG|Лигурия|LIG|#c8102e|#002d72|#002d72|#c8102e|73|s
+FRL|Фриули|FRL|#111111|#ffffff|#111111|#111111|75|s
+SRD|Сардиния|SRD|#c4122e|#002e6d|#002e6d|#002e6d|72|s
+APL|Апулия|APL|#ffd700|#d91920|#111111|#111111|71|s
+VEN|Венето|VEN|#ffd400|#003e81|#003e81|#003e81|72|
+ARN|Арно|ARN|#005aab|#ffffff|#ffffff|#005aab|70|
+BRN|Брианца|BRN|#d4021d|#ffffff|#ffffff|#d4021d|71|
+NEM|Северная Эмилия|NEM|#ffd200|#003b7a|#ffffff|#111111|72|
+LAR|Ларио|LAR|#003d7c|#ffffff|#ffffff|#003d7c|74|
+LAG|Лагуна|LAG|#111111|#f39200|#111111|#111111|70|`,
+DE:`MUR|Мюнхен Ред|MUR|#dc052d|#ffffff|#ffffff|#dc052d|91|
+RUR|Рур Жёлтые|RUY|#fde100|#111111|#111111|#fde100|86|
+RHL|Рейнланд|RHL|#e32221|#111111|#111111|#e32221|87|
+SAX|Саксония|SAX|#ffffff|#dd0741|#ffffff|#ffffff|84|
+MAI|Майн|MAI|#111111|#e1000f|#111111|#111111|81|
+SWB|Швабия|SWB|#ffffff|#e32219|#ffffff|#ffffff|81|
+NSX|Нижняя Саксония|NSX|#65b32e|#ffffff|#ffffff|#65b32e|77|
+NRH|Нижний Рейн|NRH|#ffffff|#1f9e3f|#ffffff|#ffffff|78|
+SWZ|Шварцвальд|SWZ|#e30613|#111111|#111111|#e30613|78|
+KRG|Крайхгау|KRG|#1961b5|#ffffff|#1961b5|#1961b5|76|
+WSR|Везер|WSR|#1d9053|#ffffff|#ffffff|#1d9053|75|
+RHS|Рейнгессен|RHS|#c3141e|#ffffff|#ffffff|#c3141e|75|
+LEC|Лех|LEC|#ba3733|#46714d|#ffffff|#ba3733|73|
+BEO|Берлин Восток|BEO|#eb1923|#ffffff|#ffffff|#eb1923|76|
+RUB|Рур Синие|RUB|#005ca9|#ffffff|#005ca9|#005ca9|70|
+BRE|Брен|BRE|#e2001a|#003b79|#003b79|#e2001a|71|
+HPT|Гамбург Порт|HPT|#6c4b3c|#ffffff|#6c4b3c|#6c4b3c|71|
+BLT|Балтика|BLT|#005da4|#e1001a|#ffffff|#005da4|69|`,
+FR:`IDF|Иль-де-Франс|IDF|#004170|#da291c|#004170|#004170|89|
+PRV|Прованс|PRV|#ffffff|#2faee0|#ffffff|#ffffff|82|
+RHN|Рона|RHN|#ffffff|#14387f|#ffffff|#ffffff|81|
+RIV|Ривьера|RIV|#e51b22|#ffffff|#ffffff|#e51b22|83|
+FLD|Фландрия|FLD|#e01e13|#20325f|#20325f|#e01e13|80|
+AZR|Лазурный Берег|AZR|#c8102e|#111111|#111111|#111111|78|s
+ART|Артуа|ART|#ec1c24|#fff200|#111111|#ec1c24|78|
+BRT|Бретань|BRT|#e13327|#111111|#111111|#111111|78|
+LOR|Луара|LOR|#fcd405|#0b8c3e|#0b8c3e|#fcd405|73|
+ELZ|Эльзас|ELZ|#009fe3|#ffffff|#ffffff|#009fe3|76|
+GAR|Гаронна|GAR|#6b2c91|#ffffff|#ffffff|#6b2c91|74|
+OCC|Окситания|OCC|#003a7d|#f39200|#003a7d|#003a7d|71|
+CHP|Шампань|CHP|#e2001a|#ffffff|#ffffff|#e2001a|73|
+FIN|Финистер|FIN|#e2001a|#ffffff|#e2001a|#e2001a|75|
+NRM|Нормандия|NRM|#6ec1e4|#003a70|#003a70|#6ec1e4|70|s
+BGD|Бургундия|BGD|#ffffff|#004a98|#004a98|#ffffff|70|
+ANJ|Анжу|ANJ|#111111|#ffffff|#111111|#111111|70|s
+STE|Луара Зелёные|LVE|#00a650|#ffffff|#ffffff|#00a650|71|`};
+const CLUBS={};for(const L of LEAGUES){L.clubs=[];for(const line of CLUB_DATA[L.id].trim().split('\n')){const a=line.trim().split('|');const c={id:a[0],name:a[1],short:a[2],c1:a[3],c2:a[4],sh:a[5],so:a[6],str:+a[7],pat:a[8]||'',league:L.id,nat:L.nat};CLUBS[c.id]=c;L.clubs.push(c.id)}}
+const NAMES={
+EN:[['Jack','Harry','Tom','James','Oliver','George','Charlie','Jacob','Alfie','Ethan','Lewis','Ryan','Callum','Connor','Kieran','Liam','Mason','Reece','Sam','Ben','Joe','Danny','Josh','Max','Owen','Luke','Jordan','Jamie','Nathan','Elliot'],['Harlow','Pryce','Whitby','Ashdown','Moss','Colby','Fenwick','Bray','Thornley','Kettering','Holloway','Baxter','Cartwright','Fletcher','Granger','Hadley','Ingram','Kemp','Lowe','Marsh','Norris','Oakley','Pickering','Tanner','Underwood','Vaughan','Webb','Yates','Barlow','Dobson','Elwood','Fowler','Hartley','Marlow','Rowntree','Sefton']],
+ES:[['Alejandro','Pablo','Sergio','Diego','Javier','Álvaro','Iker','Hugo','Mario','Raúl','Adrián','Marcos','Rubén','Víctor','Jorge','Carlos','Dani','Nacho','Íñigo','Unai','Óscar','Gonzalo','Martín','Aitor'],['García','Moreno','Navarro','Romero','Ortega','Delgado','Castro','Molina','Serrano','Blanco','Iglesias','Herrera','Medina','Campos','Prieto','Cano','Rubio','Lozano','Aguirre','Arrieta','Olabarri','Soler','Pastor','Gallego','Vega','Ibarra','Cuesta','Salinas']],
+IT:[['Marco','Luca','Matteo','Lorenzo','Andrea','Federico','Davide','Simone','Alessandro','Riccardo','Gabriele','Nicolò','Tommaso','Giacomo','Pietro','Stefano','Fabio','Emanuele','Edoardo','Filippo'],['Bianchi','Ferrante','Esposito','Colombo','Ricci','Marino','Greco','Gallo','Conti','Costa','Lombardi','Moretti','Barbieri','Fontana','Santoro','Rinaldi','Caruso','Ferrara','Galli','Leone','Longo','Gentile','Vitale','Serra','Testa','Cattaneo','Bellini','Orsini']],
+DE:[['Lukas','Leon','Felix','Jonas','Maximilian','Paul','Niklas','Tim','Jan','Florian','Tobias','Julian','Moritz','Kevin','Dennis','Sebastian','Fabian','Kai','Timo','Lennart'],['Hartmann','Becker','Schulz','Hoffmann','Krüger','Wagner','Richter','Wolf','Schröder','Neumann','Schwarz','Zimmermann','Braun','Lange','Krause','Lehmann','Köhler','Brandt','Vogel','Seidel','Ziegler','Engel','Haas','Kraft','Dietrich','Albrecht']],
+FR:[['Lucas','Hugo','Théo','Nathan','Louis','Enzo','Mathis','Jules','Maxime','Antoine','Baptiste','Clément','Adrien','Yanis','Rayan','Romain','Quentin','Bastien','Mehdi','Moussa','Ibrahima','Valentin'],['Bernard','Dubois','Durand','Lefebvre','Moreau','Laurent','Leroy','Roux','Fontaine','Chevalier','Robin','Gauthier','Mercier','Blanchard','Guérin','Boyer','Garnier','Faure','Rousseau','Diallo','Traoré','Camara','Koné','Lemaire','Perrin','Marchand']],
+BR:[['Gabriel','Rafael','Thiago','Bruno','Felipe','Matheus','Caio','Igor','Leandro','Wesley'],['Santos','Oliveira','Souza','Lima','Pereira','Carvalho','Rocha','Ribeiro','Barbosa','Moraes','Teixeira']],
+PT:[['João','Rúben','Diogo','Nuno','Tiago','Rafael','Gonçalo','André'],['Ferreira','Gonçalves','Lopes','Marques','Mendes','Pinto','Correia','Antunes']],
+NL:[['Daan','Sem','Jesse','Luuk','Milan','Bram','Thijs','Stijn'],['de Vries','Bakker','Visser','Smit','Jansen','de Boer','van den Berg','Mulder','Brouwer','Kuipers']],
+AF:[['Moussa','Ibrahim','Yaw','Kwame','Samuel','Emmanuel','Cheikh','Amadou','Youssef','Kofi'],['Mensah','Okafor','Diop','Ndiaye','Sarr','Boateng','Owusu','Adeyemi','Keita','Bamba']]};
+const NAT_ALL=Object.keys(NAMES);
+function hashStr(t){let h=2166136261;for(let i=0;i<t.length;i++){h^=t.charCodeAt(i);h=Math.imul(h,16777619)}return h>>>0}
+function srng(seed){let a=seed>>>0;return()=>{a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+const SQ={};
+function squadOf(id){if(SQ[id])return SQ[id];const c=CLUBS[id],r=srng(hashStr(id+':v1')),pk=a=>a[(r()*a.length)|0],used=new Set(),nums=new Set(),sq=[];
+  const PREF={GK:[1,13,25,31],DEF:[2,3,4,5,6,12,14,15,22,23,24,26],MID:[8,10,16,17,18,20,21,28,30],FWD:[9,7,11,19,27,29,33]};
+  for(const [pos,n,top] of [['GK',3,1],['DEF',8,4],['MID',7,4],['FWD',5,2]])for(let i=0;i<n;i++){
+    const nat=r()<0.65?c.nat:pk(NAT_ALL);let nm,g=0;do{nm=pk(NAMES[nat][0])+' '+pk(NAMES[nat][1]);g++}while(used.has(nm)&&g<30);used.add(nm);
+    const ovr=Math.round(clamp(c.str+(i<top?1:-6)+(r()-0.5)*10,45,95));let num=PREF[pos].find(x=>!nums.has(x));if(!num){do{num=30+((r()*69)|0)}while(nums.has(num))}nums.add(num);
+    const at=(b,v)=>Math.round(clamp(ovr+b+(r()-0.5)*v,25,97));
+    sq.push({name:nm,nat,pos,ovr,age:17+((r()*18)|0),num,pac:at(pos==='FWD'?4:pos==='DEF'?-3:pos==='GK'?-25:0,14),sho:at(pos==='FWD'?6:pos==='MID'?-4:pos==='DEF'?-16:-45,12),
+      pas:at(pos==='MID'?5:pos==='FWD'?-3:pos==='GK'?-20:-4,12),def:at(pos==='DEF'?8:pos==='MID'?-6:pos==='FWD'?-22:-30,12),gkr:pos==='GK'?ovr:20})}
+  return SQ[id]=sq}
+function xiOf(id){const sq=squadOf(id),best=(pos,n)=>sq.filter(p=>p.pos===pos).sort((a,b)=>b.ovr-a.ovr).slice(0,n);const d=best('DEF',4),m=best('MID',4);
+  return [...best('GK',1),d[0],d[1],d[2],d[3],m[0],m[1],m[2],m[3],...best('FWD',2)]}
+const teamOvr=id=>Math.round(xiOf(id).reduce((a,p)=>a+p.ovr,0)/11);
+const hexRgb=h=>[parseInt(h.slice(1,3),16),parseInt(h.slice(3,5),16),parseInt(h.slice(5,7),16)];
+const lum=h=>{const c=hexRgb(h);return (0.299*c[0]+0.587*c[1]+0.114*c[2])/255};
+const cdist=(a,b)=>{const x=hexRgb(a),y=hexRgb(b);return Math.hypot(x[0]-y[0],x[1]-y[1],x[2]-y[2])};
+function makeKit(c,alt){const k={name:c.name,short:c.short,shirt:c.c1,trim:c.c2,shorts:c.sh,socks:c.so,pat:c.pat};
+  if(alt===1){const l=lum(c.c1)>0.6;k.shirt=l?'#1f2a44':'#f4f4f4';k.trim=c.c1;k.shorts=k.shirt;k.socks=k.shirt;k.pat=''}
+  else if(alt===2){k.shirt=c.c2;k.trim=c.c1;k.shorts=c.c1;k.socks=c.c2;k.pat=''}
+  const gks=['#22a34a','#8b5cf6','#f59e0b','#0ea5e9','#ec4899'];k.gk=gks.sort((a,b)=>cdist(b,k.shirt)-cdist(a,k.shirt))[0];k.dot=k.shirt;return k}
+const stars=v=>'★'.repeat(clamp(Math.round((v-62)/6),1,5))+'☆'.repeat(5-clamp(Math.round((v-62)/6),1,5));
 const DIFF={easy:{react:0.75,tackle:0.2,shotErr:1.5,gk:0.55,spd:0.9},normal:{react:1,tackle:0.33,shotErr:1.1,gk:0.66,spd:0.98},hard:{react:1.3,tackle:0.48,shotErr:0.85,gk:0.78,spd:1.05}};
 const MATE={react:1,tackle:0.28,shotErr:1,gk:0.68,spd:1};
 const SKINS=['#f1c27d','#e0ac69','#c68642','#8d5524','#ffdbac'],HAIRS=['#2b1a0e','#141414','#6b4423','#d9b55a','#8a5a2b','#141414'];
 
-const settings={team:'LEE',len:3,diff:'normal',stick:'float'};
+const settings={team:'LEE',opp:'MUN',len:3,diff:'normal',stick:'float'};
 try{const sv=localStorage.getItem('pf95_stick');if(sv==='fixed'||sv==='float')settings.stick=sv}catch(e){}
 let teams=[],all=[],ball=null,G=null,running=false,paused=false;
 const inp={kx:0,ky:0,tx:0,ty:0,x:0,y:0,passHit:false,shootHit:false,shootRel:false,shootHeld:false,thruHit:false,thruHeld:false,sprintHeld:false,keys:{}};
@@ -256,13 +399,16 @@ function laneBlocked(p,m){for(const o of other(p.team).players)if(segDist(o,ball
 function inOwnBox(p,pt){const f=rfx(p.team,pt.x);return f<0.135&&f>-0.03&&Math.abs(pt.y-GCY)<122}
 function msg(t,d,big){G.msg={txt:t,t:d,big:!!big}}
 
-function mkTeam(key,i){return{key,kit:KITS[key],idx:i,score:0,side:1,human:false,ai:MATE,players:[],chaser:null,support:null}}
-function mkPlayer(t,i){const f=FORM[i];return{team:t,i,role:f[2],name:t.kit.names[i],num:[1,2,5,6,3,8,4,10,7,9,11][i],bx:f[0],by:f[1],x:0,y:0,vx:0,vy:0,tvx:0,tvy:0,face:0,anim:Math.random()*2,
-  spd:(f[2]==='GK'?70:74)*rnd(0.94,1.06),stun:0,fallen:0,kickCd:0,slide:0,sdx:0,sdy:0,tackleCd:0,decCd:0,dive:0,diveDir:1,hold:0,spx:null,spy:null,skin:pick(SKINS),hair:pick(HAIRS)}}
+function mkTeam(key,i){const c=CLUBS[key]||CLUBS.LEE;return{key:c.id,club:c,kit:makeKit(c,0),xi:xiOf(c.id),ovr:teamOvr(c.id),idx:i,score:0,side:1,human:false,ai:MATE,players:[],chaser:null,support:null}}
+function adjAI(b,ovr,k){const f=clamp((ovr-78)/14,-1,1)*k;return{react:b.react*(1+0.15*f),tackle:clamp(b.tackle+0.07*f,0.08,0.7),shotErr:b.shotErr*(1-0.15*f),gk:clamp(b.gk+0.06*f,0.35,0.92),spd:b.spd*(1+0.04*f)}}
+function mkPlayer(t,i){const f=FORM[i],x=t.xi[i];return{team:t,i,role:f[2],name:x.name,num:x.num,at:x,bx:f[0],by:f[1],x:0,y:0,vx:0,vy:0,tvx:0,tvy:0,face:0,anim:Math.random()*2,
+  spd:(f[2]==='GK'?70:74)*(0.9+x.pac/520)*rnd(0.97,1.03),stun:0,fallen:0,kickCd:0,slide:0,sdx:0,sdy:0,tackleCd:0,decCd:0,dive:0,diveDir:1,hold:0,spx:null,spy:null,skin:pick(SKINS),hair:pick(HAIRS)}}
 
 function newMatch(train){
-  teams=[mkTeam('LEE',0),mkTeam('MUN',1)];teams[0].side=1;teams[1].side=-1;
-  teams.forEach(t=>{t.human=t.key===settings.team;t.ai=t.human?MATE:DIFF[settings.diff]||DIFF.normal;t.players=FORM.map((f,i)=>mkPlayer(t,i));});
+  const hk=CLUBS[settings.team]?settings.team:'LEE';let ak=CLUBS[settings.opp]&&settings.opp!==hk?settings.opp:(hk==='MUN'?'LEE':'MUN');
+  teams=[mkTeam(hk,0),mkTeam(ak,1)];teams[0].side=1;teams[1].side=-1;
+  if(cdist(teams[0].kit.shirt,teams[1].kit.shirt)<140){teams[1].kit=makeKit(teams[1].club,1);if(cdist(teams[0].kit.shirt,teams[1].kit.shirt)<140)teams[1].kit=makeKit(teams[1].club,2)}
+  teams.forEach(t=>{t.human=t.key===settings.team;t.ai=t.human?adjAI(MATE,t.ovr,0.5):adjAI(DIFF[settings.diff]||DIFF.normal,t.ovr,1);t.players=FORM.map((f,i)=>mkPlayer(t,i));});
   if(train)for(const t of teams)if(!t.human)t.players=[t.players[0]];
   all=[...teams[0].players,...teams[1].players];
   ball={x:CX,y:GCY,z:0,vx:0,vy:0,vz:0,owner:null,lastTouch:null,passTarget:null,passTeam:null,shot:false,shotTeam:null,saveChecked:false,spin:0};
@@ -328,7 +474,7 @@ function pass(p,m,mode='auto'){
 function shoot(p,power,aim){
   const t=p.team,gx=oppGoalX(t),ty=GCY+clamp(aim,-1,1)*(GOAL_HALF-5),dx=gx-ball.x,dy=ty-ball.y,d=hyp(dx,dy);
   const op=nearestOpp(p),pr=op&&dist(op,p)<14?0.05:0;
-  const err=(0.04+power*0.08+pr)*(p===G.ctrl?0.9:t.ai.shotErr),a=Math.atan2(dy,dx)+gauss()*err;
+  const err=(0.04+power*0.08+pr)*(p===G.ctrl?0.9:t.ai.shotErr)*(1.35-(p.at?p.at.sho:70)/140),a=Math.atan2(dy,dx)+gauss()*err;
   let vz=(20+power*100)*clamp(d/170,0.45,1.15);if(power>0.92)vz+=rnd(0,60);
   kick(p,Math.cos(a),Math.sin(a),280+power*200,vz);ball.shot=true;ball.shotTeam=t;sfx.shot();G.stats.shots[t.idx]++;
 }
@@ -345,7 +491,7 @@ function boxTarget(p){let best=null,bs=-1e9;for(const q of p.team.players){if(q=
 function take(p){const b=ball;b.owner=p;b.lastTouch=p;b.shot=false;b.passTarget=null;b.passTeam=null;b.vz=0;p.decCd=rnd(0.1,0.3);if(p.role==='GK'){p.hold=rnd(0.8,1.2);b.z=7}}
 function tryTackle(p,chance){const o=ball.owner;if(!o||o.team===p.team||o.role==='GK'||p.tackleCd>0||dist(p,o)>9)return;
   p.tackleCd=rnd(0.45,0.8)/p.team.ai.react;
-  if(Math.random()<(chance||p.team.ai.tackle)){o.stun=0.45;sfx.tackle();
+  if(Math.random()<(chance||p.team.ai.tackle)*(0.75+(p.at?p.at.def:60)/200)){o.stun=0.45;sfx.tackle();
     if(Math.random()<0.55)take(p);else{ball.owner=null;const a=Math.atan2(o.y-p.y,o.x-p.x)+rnd(-1,1);ball.vx=Math.cos(a)*90;ball.vy=Math.sin(a)*90;ball.lastTouch=p;p.kickCd=0.1;ball.passTeam=null;ball.passTarget=null}}}
 function startSlide(p){if(p.slide>0||p.stun>0)return;const m=inpMag();let dx,dy;if(m>0.2){dx=inp.x/m;dy=inp.y/m}else{dx=Math.cos(p.face);dy=Math.sin(p.face)}
   p.slide=0.36;p.sdx=dx;p.sdy=dy;p.face=Math.atan2(dy,dx);nz(.18,.25,300)}
@@ -389,7 +535,7 @@ function aiGK(p,dt){
   if(!ball.owner&&ball.shot&&ball.vx*s<0){const tt=(g-ball.x)/ball.vx;if(tt>0&&tt<1.5){ty=clamp(ball.y+ball.vy*tt,GCY-GOAL_HALF-4,GCY+GOAL_HALF+4);tx=g+s*5;sf=1.2}}
   moveTo(p,tx,ty,sf);
   if(!ball.owner&&ball.shot&&ball.shotTeam!==t&&!ball.saveChecked&&ball.vx*s<0&&ball.z<24){const d=dist(p,ball);
-    if(d<18){ball.saveChecked=true;const ch=t.ai.gk+0.16-(bs-380)/900-(d>12?0.12:0);p.dive=0.5;p.diveDir=Math.sign(ball.y-p.y)||1;
+    if(d<18){ball.saveChecked=true;const ch=t.ai.gk+0.16-(bs-380)/900-(d>12?0.12:0)+((p.at?p.at.gkr:75)-75)/250;p.dive=0.5;p.diveDir=Math.sign(ball.y-p.y)||1;
       if(Math.random()<ch){if(bs<360&&Math.random()<0.6){take(p);sfx.tackle()}else{ball.vx=-ball.vx*0.3+s*40;ball.vy=ball.vy*0.3+rnd(-1,1)*140;ball.vz=70;ball.shot=false;ball.lastTouch=p;p.kickCd=0.4;sfx.kick()}}
       else p.stun=0.6;}}
 }
@@ -639,8 +785,8 @@ function drawFig(p,c){
   if(farL){leg(-1,sw,lA);arm(-1,-sw);leg(1,-sw,lB)}else{leg(1,-sw,lB);arm(1,sw);leg(-1,sw,lA)}
   poly([J(0,-1.25,7.8+bob),J(0,1.25,7.8+bob),J(0.1,1.2,5.9+bob),J(0.1,-1.2,5.9+bob)],col.shorts,1.3*s);
   const t1=J(ln*0.9,-1.6,11.3+bob),t2=J(ln*0.9,1.6,11.3+bob);poly([t1,t2,J(0,1.3,7.6+bob),J(0,-1.3,7.6+bob)],col.shirt,1.5*s);
-  if(!gk)seg(t1,t2,k.trim,0.5*s);
-  if(J(1,0,0)[3]>c[3]&&s>2.2){const m=J(ln*0.5,0,9.6+bob);ctx.save();ctx.fillStyle=gk?'#fff':(p.team.key==='MUN'?'#fff':'#14215a');ctx.font=`bold ${Math.round(2.6*s)}px Arial, sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(p.num,m[0],m[1]);ctx.restore()}
+  if(!gk){seg(t1,t2,k.trim,0.5*s);if(k.pat==='s'){for(const o of [-0.65,0,0.65])seg(J(ln*0.9,o,11.2+bob),J(0,o*0.85,7.7+bob),k.trim,0.42*s)}}
+  if(J(1,0,0)[3]>c[3]&&s>2.2){const m=J(ln*0.5,0,9.6+bob);ctx.save();ctx.fillStyle=gk?'#fff':(lum(k.shirt)>0.55?'#14215a':'#fff');ctx.font=`bold ${Math.round(2.6*s)}px Arial, sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(p.num,m[0],m[1]);ctx.restore()}
   if(farL)arm(1,sw);else arm(-1,-sw);
   const hc=J(ln*1.1+0.1,0,13.1+bob),hr=1.2*s;seg(J(ln,0,11.4+bob),hc,col.skin,0.9*s);dot(hc,hr,col.skin);
   ctx.fillStyle=p.hair;ctx.beginPath();if(J(1,0,0)[3]>c[3])ctx.arc(hc[0],hc[1],hr*1.03,0,7);else ctx.arc(hc[0],hc[1]-hr*0.12,hr*1.03,Math.PI*1.02,Math.PI*1.98);ctx.fill();
@@ -656,7 +802,7 @@ function minimap(){const u=H/180,mw=66*u,mh=40*u,mx=(W-mw)/2,my=H-mh-4*u;ctx.fil
   ctx.strokeStyle='rgba(255,255,255,.55)';ctx.lineWidth=Math.max(1,0.5*u);ctx.strokeRect(mx,my,mw,mh);ctx.beginPath();ctx.moveTo(mx+mw/2,my);ctx.lineTo(mx+mw/2,my+mh);ctx.stroke();
   const bw=104/PW*mw,bh=240/PH*mh;ctx.strokeRect(mx,my+(mh-bh)/2,bw,bh);ctx.strokeRect(mx+mw-bw,my+(mh-bh)/2,bw,bh);
   const X=v=>mx+clamp((v-PX0)/PW,0,1)*mw,Y=v=>my+clamp((v-PY0)/PH,0,1)*mh;
-  for(const p of all){dot([X(p.x),Y(p.y)],1.7*u,p.team.key==='LEE'?'#ffffff':'#ff3b3b');if(p===G.ctrl){ctx.strokeStyle='#4fe3ff';ctx.lineWidth=0.8*u;ctx.beginPath();ctx.arc(X(p.x),Y(p.y),2.8*u,0,7);ctx.stroke()}}
+  for(const p of all){ctx.fillStyle='#000';ctx.beginPath();ctx.arc(X(p.x),Y(p.y),2.2*u,0,7);ctx.fill();dot([X(p.x),Y(p.y)],1.6*u,p.team.kit.shirt);if(p===G.ctrl){ctx.strokeStyle='#4fe3ff';ctx.lineWidth=0.8*u;ctx.beginPath();ctx.arc(X(p.x),Y(p.y),2.8*u,0,7);ctx.stroke()}}
   dot([X(ball.x),Y(ball.y)],1.5*u,'#ffd400')}
 let menuT=0,lastErr='';
 function render(){ctx.setTransform(1,0,0,1,0,0);ctx.globalAlpha=1;
@@ -709,8 +855,8 @@ const LS={get(k){try{return JSON.parse(localStorage.getItem(k))}catch(e){return 
 function freshStats(){return{v:1,clubs:{},matches:0,w:0,d:0,l:0,gf:0,ga:0,seconds:0,days:[],history:[],scorers:{},trophies:{},bestWin:null,mostGoals:0,training:{sessions:0,goals:0}}}
 let stats=Object.assign(freshStats(),LS.get('pf95_stats')||{});
 const saveStats=()=>LS.set('pf95_stats',stats);
-{const sv=LS.get('pf95_settings');if(sv){for(const k of ['team','len','diff','stick'])if(sv[k]!=null)settings[k]=sv[k];if(sv.sound===false)AU.on=false}}
-const saveSettings=()=>LS.set('pf95_settings',{team:settings.team,len:settings.len,diff:settings.diff,stick:settings.stick,sound:AU.on});
+{const sv=LS.get('pf95_settings');if(sv){for(const k of ['team','opp','len','diff','stick'])if(sv[k]!=null)settings[k]=sv[k];if(sv.sound===false)AU.on=false}}
+const saveSettings=()=>LS.set('pf95_settings',{team:settings.team,opp:settings.opp,len:settings.len,diff:settings.diff,stick:settings.stick,sound:AU.on});
 function today(){const d=new Date();return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0')}
 function dayNum(s){const a=s.split('-').map(Number);return Math.round(Date.UTC(a[0],a[1]-1,a[2])/864e5)}
 function markDay(){const t=today();if(!stats.days.includes(t)){stats.days.push(t);if(stats.days.length>3000)stats.days.shift()}if(streakInfo().best>=7)unlock('days7');saveStats()}
@@ -763,28 +909,51 @@ function openSub(id,title,html,after){$('#home').classList.add('hidden');$('#sub
 function backHome(){$('#sub').classList.add('hidden');$('#home').classList.remove('hidden');tone(440,.05,'square',.03)}
 $('#subBack').onclick=backHome;
 const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'})[c]);
-const crest=(k,small)=>{const c=k==='LEE'?['#f2f2f2','#2563eb']:['#d7191f','#f2f2f2'];return `<span class="crest${small?' s':''}" style="--a:${c[0]};--b:${c[1]}"></span>`};
+const crest=(k,small)=>{const c=CLUBS[k]||CLUBS.LEE;return `<span class="crest${small?' s':''}" style="--a:${c.c1};--b:${c.c2}"></span>`};
+const cname=k=>CLUBS[k]?CLUBS[k].name:k;
 const DN={easy:'Легко',normal:'Норма',hard:'Сложно'};
-function clubPicker(){return `<div class="pnl wide"><div class="ph">Выбери клуб</div><div class="clubs">${Object.keys(KITS).map(k=>`<button class="club${settings.team===k?' on':''}" data-k="${k}">${crest(k)}<span>${KITS[k].name}<small>${k==='LEE'?'Белые':'Красные'} · сыграно ${stats.clubs[k]||0}</small></span></button>`).join('')}</div></div>`}
-function bindClubs(b){b.querySelectorAll('.club').forEach(c=>c.onclick=()=>{settings.team=c.dataset.k;saveSettings();b.querySelectorAll('.club').forEach(x=>x.classList.toggle('on',x===c));const o=b.querySelector('#oppName');if(o)o.textContent=KITS[settings.team==='LEE'?'MUN':'LEE'].name;tone(760,.04,'square',.03)})}
+const lname=id=>LEAGUES.find(l=>l.id===id).name;
+function clubCard(k,role){const c=CLUBS[k];return `<button class="club wide-club" data-role="${role}">${crest(k)}<span>${c.name}<small>${lname(c.league)} · сила ${teamOvr(k)} · <span class="stars">${stars(teamOvr(k))}</span></small></span><em>Сменить ▸</em></button>`}
+function xiTable(k){const xi=xiOf(k);return xi.map(p=>`<div class="pl"><span class="pp ${p.pos}">${({GK:'ВР',DEF:'ЗЩ',MID:'ПЗ',FWD:'НП'})[p.pos]}</span><span class="pn">${p.num}</span><span class="pm">${esc(p.name)}</span><b>${p.ovr}</b></div>`).join('')}
+function ensureOpp(){if(!CLUBS[settings.team])settings.team='LEE';if(!CLUBS[settings.opp]||settings.opp===settings.team){const L=LEAGUES.find(l=>l.id===CLUBS[settings.team].league);settings.opp=L.clubs.find(x=>x!==settings.team)}}
+let pickCtx=null;
+function openPicker(role,back){pickCtx={role,back};const cur=role==='opp'?settings.opp:settings.team;let lg=CLUBS[cur].league;
+  const render=()=>{const L=LEAGUES.find(l=>l.id===lg);const sel=role==='opp'?settings.opp:settings.team;
+   openSub('club',role==='opp'?'Выбор соперника':'Выбор клуба',`<div class="pnl wide"><div class="tabs">${LEAGUES.map(l=>`<button class="tab${l.id===lg?' on':''}" data-l="${l.id}">${l.name}</button>`).join('')}</div>
+     <div class="cgrid">${L.clubs.map(k=>{const dis=(role==='opp'&&k===settings.team)||(role==='team'&&k===settings.opp&&false);return `<button class="cc${k===sel?' on':''}" data-k="${k}"${dis?' disabled':''}>${crest(k,true)}<span>${CLUBS[k].name}</span><b>${teamOvr(k)}</b></button>`}).join('')}</div></div>
+     <div class="pnl wide"><div class="ph">${CLUBS[sel].name} · стартовый состав · сила ${teamOvr(sel)}</div><div class="xi">${xiTable(sel)}</div></div>
+     <button class="bigbtn" id="pickOk">✔ Готово</button>`,b=>{
+      b.querySelectorAll('.tab').forEach(t=>t.onclick=()=>{lg=t.dataset.l;render()});
+      b.querySelectorAll('.cc').forEach(c=>c.onclick=()=>{if(c.disabled)return;if(role==='opp')settings.opp=c.dataset.k;else{settings.team=c.dataset.k;ensureOpp()}saveSettings();const st=b.scrollTop;render();$('#sbody').scrollTop=st});
+      b.querySelector('#pickOk').onclick=()=>back()})};
+  render()}
+function openMatch(){ensureOpp();openSub('match','Матч',`<div class="pnl wide"><div class="ph">Твой клуб</div>${clubCard(settings.team,'team')}<div class="ph" style="margin-top:10px">Соперник</div>${clubCard(settings.opp,'opp')}
+   <div class="row2"><button class="mini" id="rndOpp">🎲 Случайный соперник</button><button class="mini" id="swap">⇄ Поменять</button></div></div>
+  <div class="pnl"><div class="ph">Параметры матча</div><div class="kv"><span>Длина тайма</span><b>${settings.len} мин</b></div><div class="kv"><span>Сложность</span><b>${DN[settings.diff]}</b></div><div class="kv"><span>Сила клубов</span><b>${teamOvr(settings.team)} — ${teamOvr(settings.opp)}</b></div></div>
+  <div class="pnl"><div class="ph">Стартовый состав</div><div class="xi">${xiTable(settings.team)}</div></div>
+  <button class="bigbtn" id="goMatch">▶ Начать матч</button>`,b=>{
+   b.querySelectorAll('.wide-club').forEach(c=>c.onclick=()=>openPicker(c.dataset.role,openMatch));
+   b.querySelector('#rndOpp').onclick=()=>{const all=Object.keys(CLUBS).filter(k=>k!==settings.team);settings.opp=all[(Math.random()*all.length)|0];saveSettings();openMatch()};
+   b.querySelector('#swap').onclick=()=>{const t=settings.team;settings.team=settings.opp;settings.opp=t;saveSettings();openMatch()};
+   b.querySelector('#goMatch').onclick=()=>startGame('match')})}
+function openTraining(){ensureOpp();openSub('training','Тренировка',`<div class="pnl wide"><div class="ph">Твой клуб</div>${clubCard(settings.team,'team')}</div>
+   <div class="pnl"><div class="ph">Как это работает</div><div class="muted">На поле только твоя команда и вратарь соперника. Время не ограничено: бей, пасуй, обводи. После гола или аута мяч снова у твоего нападающего. Выйти — пауза → «В меню».</div></div>
+   <div class="pnl"><div class="ph">Твоя статистика</div><div class="kv"><span>Тренировок</span><b>${stats.training.sessions}</b></div><div class="kv"><span>Голов на тренировках</span><b>${stats.training.goals}</b></div><div class="kv"><span>До трофея «Снайпер»</span><b>${Math.max(0,25-stats.training.goals)}</b></div></div>
+   <button class="bigbtn" id="goTrain">▶ Начать тренировку</button>`,b=>{b.querySelectorAll('.wide-club').forEach(c=>c.onclick=()=>openPicker('team',openTraining));b.querySelector('#goTrain').onclick=()=>startGame('training')})}
 function openItem(i){const id=HOME[i].id;
- if(id==='match')openSub(id,'Матч',clubPicker()+`<div class="pnl"><div class="ph">Параметры матча</div><div class="kv"><span>Соперник</span><b id="oppName">${KITS[settings.team==='LEE'?'MUN':'LEE'].name}</b></div><div class="kv"><span>Длина тайма</span><b>${settings.len} мин</b></div><div class="kv"><span>Сложность</span><b>${DN[settings.diff]}</b></div></div>
-   <div class="pnl"><div class="ph">Твой клуб</div><div class="kv"><span>Матчей</span><b>${stats.matches}</b></div><div class="kv"><span>В / Н / П</span><b style="white-space:nowrap">${stats.w} / ${stats.d} / ${stats.l}</b></div></div>
-   <button class="bigbtn" id="goMatch">▶ Начать матч</button>`,b=>{bindClubs(b);b.querySelector('#goMatch').onclick=()=>startGame('match')});
- else if(id==='career')openSub(id,'Карьера',`<div class="pnl wide"><div class="big">Скоро</div><div class="muted" style="margin-top:8px">Режим карьеры появится в следующих версиях игры.</div></div>
+ if(id==='match')openMatch();
+ else if(id==='career')openSub(id,'Карьера',`<div class="pnl wide"><div class="big">Скоро</div><div class="muted" style="margin-top:8px">Режим карьеры появится в следующих версиях игры. Фундамент уже готов: 5 лиг и ${Object.keys(CLUBS).length} клубов с составами.</div></div>
    <div class="pnl"><div class="ph">Что будет</div><div class="kv"><span>Сезоны и таблица лиги</span><b>⏳</b></div><div class="kv"><span>Трансферы игроков</span><b>⏳</b></div><div class="kv"><span>Кубки и турниры</span><b>⏳</b></div><div class="kv"><span>Развитие игроков</span><b>⏳</b></div></div>`);
  else if(id==='club')openClub();
- else if(id==='training')openSub(id,'Тренировка',clubPicker()+`<div class="pnl"><div class="ph">Как это работает</div><div class="muted">На поле только твоя команда и вратарь соперника. Время не ограничено: бей, пасуй, обводи. После гола или аута мяч снова у твоего нападающего. Выйти — пауза → «В меню».</div></div>
-   <div class="pnl"><div class="ph">Твоя статистика</div><div class="kv"><span>Тренировок</span><b>${stats.training.sessions}</b></div><div class="kv"><span>Голов на тренировках</span><b>${stats.training.goals}</b></div><div class="kv"><span>До трофея «Снайпер»</span><b>${Math.max(0,25-stats.training.goals)}</b></div></div>
-   <button class="bigbtn" id="goTrain">▶ Начать тренировку</button>`,b=>{bindClubs(b);b.querySelector('#goTrain').onclick=()=>startGame('training')});
+ else if(id==='training')openTraining();
  else if(id==='museum')openMuseum();
  else if(id==='settings')openSettings();
  else if(id==='about')openAbout();}
-function openClub(){const si=streakInfo(),ks=Object.keys(stats.clubs).filter(k=>KITS[k]);let fav=null;for(const k of ks)if(!fav||stats.clubs[k]>stats.clubs[fav])fav=k;
+function openClub(){const si=streakInfo(),ks=Object.keys(stats.clubs).filter(k=>CLUBS[k]).sort((a,b)=>stats.clubs[b]-stats.clubs[a]);const fav=ks[0]||null;
  const m=stats.matches||0,pc=v=>m?(v/m*100):0,got=TROPHIES.filter(t=>stats.trophies[t[0]]).length,mins=Math.floor(stats.seconds/60);
  openSub('club','Клуб',`
- <div class="pnl"><div class="ph">Любимый клуб</div>${fav?`<div class="favc">${crest(fav)}<div><div class="big">${KITS[fav].name}</div><div class="unit">${stats.clubs[fav]} матч(ей) за клуб</div></div></div>`:'<div class="muted">Сыграй матч — клуб, за который играешь чаще всего, станет любимым.</div>'}</div>
- <div class="pnl"><div class="ph">Управляемые клубы</div>${Object.keys(KITS).map(k=>`<div class="kv" style="${stats.clubs[k]?'':'opacity:.5'}"><span>${crest(k,true)}${KITS[k].name}</span><b>${stats.clubs[k]||0} матч.</b></div>`).join('')}</div>
+ <div class="pnl"><div class="ph">Любимый клуб</div>${fav?`<div class="favc">${crest(fav)}<div><div class="big">${CLUBS[fav].name}</div><div class="unit">${stats.clubs[fav]} матч(ей) за клуб · ${lname(CLUBS[fav].league)}</div></div></div>`:'<div class="muted">Сыграй матч — клуб, за который играешь чаще всего, станет любимым.</div>'}</div>
+ <div class="pnl"><div class="ph">Управляемые клубы · ${ks.length}</div>${ks.length?ks.slice(0,8).map(k=>`<div class="kv"><span>${crest(k,true)}${CLUBS[k].name}</span><b>${stats.clubs[k]} матч.</b></div>`).join(''):'<div class="muted">Пока ни одного — выбери клуб в разделе «Матч».</div>'}</div>
  <div class="pnl"><div class="ph">Минуты в игре</div><div class="big">${mins}<span class="unit">мин</span></div><div class="unit">≈ ${(stats.seconds/3600).toFixed(1)} ч в матчах и на тренировках</div></div>
  <div class="pnl"><div class="ph">Все матчи</div><div class="big">${m}</div><div class="bar"><i class="w" style="width:${pc(stats.w)}%"></i><i class="d" style="width:${pc(stats.d)}%"></i><i class="l" style="width:${pc(stats.l)}%"></i></div>
    <div class="kv"><span>Победы</span><b>${stats.w}</b></div><div class="kv"><span>Ничьи</span><b>${stats.d}</b></div><div class="kv"><span>Поражения</span><b>${stats.l}</b></div><div class="kv"><span>Голы: забито / пропущено</span><b>${stats.gf} / ${stats.ga}</b></div></div>
@@ -792,7 +961,7 @@ function openClub(){const si=streakInfo(),ks=Object.keys(stats.clubs).filter(k=>
  <div class="pnl wide"><div class="ph">Трофеи · ${got} из ${TROPHIES.length}</div><div class="tro">${TROPHIES.map(t=>`<div class="t${stats.trophies[t[0]]?' got':''}"><i>${t[1]}</i>${t[2]}<small>${stats.trophies[t[0]]?stats.trophies[t[0]].split('-').reverse().join('.'):t[3]}</small></div>`).join('')}</div></div>`)}
 function openMuseum(){const hs=stats.history,sc=Object.entries(stats.scorers).sort((a,b)=>b[1]-a[1]).slice(0,6),bw=stats.bestWin;
  openSub('museum','Музей',`
- <div class="pnl wide"><div class="ph">История матчей</div>${hs.length?hs.slice(0,12).map(h=>{const r=h.gf>h.ga?'w':h.gf<h.ga?'l':'d';return `<div class="hrow"><span class="dt">${h.d.split('-').reverse().slice(0,2).join('.')}</span><span>${crest(h.me,true)}${KITS[h.me]?KITS[h.me].name:h.me} — ${KITS[h.op]?KITS[h.op].name:h.op} <span class="unit">${DN[h.df]||''}</span></span><span class="sc ${r}">${h.gf} : ${h.ga}</span></div>`}).join(''):'<div class="muted">Здесь появятся твои сыгранные матчи.</div>'}</div>
+ <div class="pnl wide"><div class="ph">История матчей</div>${hs.length?hs.slice(0,12).map(h=>{const r=h.gf>h.ga?'w':h.gf<h.ga?'l':'d';return `<div class="hrow"><span class="dt">${h.d.split('-').reverse().slice(0,2).join('.')}</span><span>${crest(h.me,true)}${cname(h.me)} — ${cname(h.op)} <span class="unit">${DN[h.df]||''}</span></span><span class="sc ${r}">${h.gf} : ${h.ga}</span></div>`}).join(''):'<div class="muted">Здесь появятся твои сыгранные матчи.</div>'}</div>
  <div class="pnl"><div class="ph">Рекорды</div><div class="kv"><span>Крупнейшая победа</span><b>${bw?bw.gf+' : '+bw.ga:'—'}</b></div><div class="kv"><span>Больше всего голов в матче</span><b>${stats.mostGoals||0}</b></div><div class="kv"><span>Всего забито</span><b>${stats.gf}</b></div><div class="kv"><span>Средний счёт</span><b>${stats.matches?(stats.gf/stats.matches).toFixed(1)+' : '+(stats.ga/stats.matches).toFixed(1):'—'}</b></div></div>
  <div class="pnl"><div class="ph">Лучшие бомбардиры</div>${sc.length?sc.map((e,i)=>`<div class="kv"><span>${i===0?'👑 ':''}${esc(e[0])}</span><b>${e[1]} ⚽</b></div>`).join(''):'<div class="muted">Забей первый гол в матче.</div>'}</div>`)}
 const OPTS={len:[[2,'2 мин'],[3,'3 мин'],[5,'5 мин'],[8,'8 мин']],diff:[['easy','Легко'],['normal','Норма'],['hard','Сложно']],stick:[['fixed','Фиксированный'],['float','Подвижный']],sound:[[true,'Вкл'],[false,'Выкл']]};
@@ -809,7 +978,7 @@ function openAbout(){const help=isTouch?`<div class="kv"><span>Джойстик<
  openSub('about','Об игре',`<div class="pnl wide"><div class="big">Пиксель Футбол '95</div><div class="unit" style="margin:4px 0 0">Версия 0.9 · ретро-футбол в духе 90-х</div></div>
  <div class="pnl"><div class="ph">Управление</div>${help}</div>
  <div class="pnl"><div class="ph">Титры</div><div class="kv"><span>Идея и тестирование</span><b>elturista0</b></div><div class="kv"><span>Код, графика, звук</span><b>Claude</b></div><div class="kv"><span>Движок</span><b>свой, HTML5 Canvas</b></div><div class="kv"><span>Звуки</span><b>синтез в игре</b></div></div>
- <div class="pnl wide"><div class="ph">Примечание</div><div class="muted">Все имена игроков вымышлены, совпадения случайны. Названия клубов временные и будут заменены перед публикацией в магазине.</div></div>`)}
+ <div class="pnl wide"><div class="ph">Примечание</div><div class="muted">Все клубы, имена игроков и рекламные щиты вымышлены, совпадения случайны.</div></div>`)}
 buildHome();
 
 let lastMode='match';
@@ -879,7 +1048,7 @@ document.addEventListener('fullscreenchange',()=>setTimeout(fit,120));
 cv.addEventListener('contextrestored',()=>{try{buildTextures()}catch(e){}});
 buildTextures();fit();requestAnimationFrame(frame);
 
-window.__PF={inp,settings,newMatch,step:n=>{for(let i=0;i<n;i++)step(STEP)},get G(){return G},get teams(){return teams},get ball(){return ball},get all(){return all},render};
+window.__PF={inp,settings,CLUBS,LEAGUES,squadOf,xiOf,teamOvr,newMatch,step:n=>{for(let i=0;i<n;i++)step(STEP)},get G(){return G},get teams(){return teams},get ball(){return ball},get all(){return all},render};
 })();
 </script>
 <script>if('serviceWorker' in navigator&&location.protocol==='https:')navigator.serviceWorker.register('sw.js').catch(()=>{})</script>
